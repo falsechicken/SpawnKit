@@ -8,15 +8,11 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
-using System.Runtime.InteropServices;
-using Rocket;
 using Rocket.RocketAPI;
-using Rocket.Logging;
 using Rocket.RocketAPI.Events;
 using SDG;
-using Steamworks;
 using UnityEngine;
+using fc.logman;
 
 namespace fc.spawnkit
 {
@@ -38,16 +34,26 @@ namespace fc.spawnkit
 		
 		#endregion
 		
-		static bool reloadCalled;
-		static SpawnKitConfiguration reLoadedConfig;
+		#region UPDATE COMMAND/HACKY VARS
 		
+		private static bool reloadCalled;
+		private static SpawnKitConfiguration reLoadedConfig;
 		
-		bool sub = false;
+		private static bool saveCalled;
+		
+		private static string givePlayerName; //Used for givekit command. Workaround for not having an instance of SpawnKit to use.
+    	private static string giveKitName;
+    	private static bool adminGiveRequested;
+		
+		#endregion
+		
+		public static LogMan logMan = new LogMan(); //Declare logman for use.
+		
+		bool subscribedToRespawnEvent = false;
     	
     	System.Random rand = new System.Random();
     	
     	List<string> weightedProfessionList = new List<string>();
-    	
     	
     	int cooldownSecondsRemaining;
     	
@@ -58,32 +64,27 @@ namespace fc.spawnkit
     	
         private void FixedUpdate()
         {	
-        	if (sub == false && this.Loaded)
+        	if (subscribedToRespawnEvent == false && this.Loaded) //Initialize once.
         	{
-            	RocketPlayerEvents.OnPlayerRevive += skOnPlayerSpawn;
-            	Logger.Log("Kits Loaded:");
+            	RocketPlayerEvents.OnPlayerRevive += OnPlayerSpawn;
+            	logMan.LogMessage(2, "Kits Loaded:");
             	foreach (Kit k in this.Configuration.Kits)
             	{
-            		Logger.Log(k.Name);
+            		logMan.LogMessage(2, k.Name);
             	}
             	BuildProfessionWeighedList();
             	GetSettings();
-            	sub = true;
+            	logMan.setDebugMode(true);
+            	subscribedToRespawnEvent = true;
         	}
         	
-        	if (reloadCalled) {
-        		this.Configuration = reLoadedConfig;
-        		GetSettings();
-        		BuildProfessionWeighedList();
-        		Logger.Log("Configuration Reloaded! Any active changes not saved.");
-        		reloadCalled = false;
-        	}
+        	DoQueuedUpdateCommands();
         	
         	ApplySettings();
         	
         }
         
-        private void skOnPlayerSpawn(RocketPlayer _player, Vector3 position, byte angle)
+        private void OnPlayerSpawn(RocketPlayer _player, Vector3 position, byte angle)
         {
         	if (this.Configuration.globalEnabled)
         	{        		
@@ -94,10 +95,14 @@ namespace fc.spawnkit
         					GivePlayerKit(_player.Player, spawnSubscriptionTable[_player.CharacterName].Name);
         					return;
         				}
+        				else {
+        					GivePlayerKit(_player.Player, this.Configuration.defaultKit);
+        					return;
+        				}
         			}
         			
         			if (!this.Configuration.randomProfessionMode) {
-        				GivePlayerKit(_player.Player, "Default");
+        				GivePlayerKit(_player.Player, this.Configuration.defaultKit);
         				return;
         			}
         			GivePlayerKit(_player.Player, GetChancedProfession());
@@ -107,15 +112,23 @@ namespace fc.spawnkit
         		//If global cooldown is enabled.
         		DateTime dtKitUsedLast;
         			
-        		if (cooldownTable.TryGetValue(_player.SteamName, out dtKitUsedLast)){
+        		if (cooldownTable.TryGetValue(_player.SteamName, out dtKitUsedLast)){ //Cooldown is up and player is already in cooldown list.
         			
         			if ((DateTime.Now - dtKitUsedLast).TotalSeconds > this.Configuration.cooldownInSecs) {
         					
         				if (this.Configuration.subscriptionMode) {
-        					GivePlayerKit(_player.Player, spawnSubscriptionTable[_player.CharacterName].Name);
-        					cooldownTable.Remove(_player.SteamName);
-        					cooldownTable.Add(_player.SteamName, DateTime.Now);
-        					return;
+        					if (spawnSubscriptionTable.ContainsKey(_player.CharacterName)) { //If the player has subscribed to a kit.
+        						GivePlayerKit(_player.Player, spawnSubscriptionTable[_player.CharacterName].Name);
+        						cooldownTable.Remove(_player.SteamName);
+        						cooldownTable.Add(_player.SteamName, DateTime.Now);
+        						return;
+        					}
+        					else { //If the player has not subscribed give them the config default.
+	        					GivePlayerKit(_player.Player, this.Configuration.defaultKit);
+	        					cooldownTable.Remove(_player.SteamName);
+        						cooldownTable.Add(_player.SteamName, DateTime.Now);
+        						return;
+        					}
         				}
         				
         				if (this.Configuration.randomProfessionMode) {
@@ -125,7 +138,7 @@ namespace fc.spawnkit
         					return;
         				}
         				else {
-        					GivePlayerKit(_player.Player, "Default");
+        					GivePlayerKit(_player.Player, this.Configuration.defaultKit);
         					cooldownTable.Remove(_player.SteamName);
         					cooldownTable.Add(_player.SteamName, DateTime.Now);
         					return;
@@ -137,20 +150,34 @@ namespace fc.spawnkit
         				cooldownSecondsRemaining = this.Configuration.cooldownInSecs - (int)(DateTime.Now - dtKitUsedLast).TotalSeconds;
         					
         				if (this.Configuration.cooldownChatMessages) //If we are to send messages to players.
-        					RocketChatManager.Say(_player.SteamName + " " + cooldownSecondsRemaining + " seconds remaining until kit available.");
+        					logMan.SayChat(_player.CharacterName + " " + cooldownSecondsRemaining + " seconds remaining until kit available.", EChatMode.SAY);
         			}
         		}
         		
-        		else
+        		else //If the player is not in the cooldown list.
         		{
-        			cooldownTable.Add(_player.SteamName, DateTime.Now);
+        			if (this.Configuration.subscriptionMode) {
+        				if (spawnSubscriptionTable.ContainsKey(_player.CharacterName)) { //If the player has subscribed to a kit.
+        					GivePlayerKit(_player.Player, spawnSubscriptionTable[_player.CharacterName].Name);
+        					cooldownTable.Add(_player.SteamName, DateTime.Now);
+        					return;
+        				}
+        				else { //If the player has not subscribed give them the config default.
+	        				GivePlayerKit(_player.Player, this.Configuration.defaultKit);
+							cooldownTable.Add(_player.SteamName, DateTime.Now);
+        					return;
+        				}
+        			}
         			
         			if (this.Configuration.randomProfessionMode) { //If we are in random profession mode.
         				GivePlayerKit(_player.Player, GetChancedProfession());
+        				cooldownTable.Add(_player.SteamName, DateTime.Now);
         				return;
         			}
         			else {
-        				GivePlayerKit(_player.Player, "Default");
+        				GivePlayerKit(_player.Player, this.Configuration.defaultKit);
+        				cooldownTable.Add(_player.SteamName, DateTime.Now);
+        				return;
         			}
         			
         		}
@@ -158,35 +185,32 @@ namespace fc.spawnkit
 
         }
         
-        
         private void GivePlayerKit(Player _player, string _kit)
         {	
         	foreach (Kit kit in this.Configuration.Kits) //Loop through kits and see if kit with name exists.
         	{
         		if (kit.Name.Equals(_kit)) //Found a matching kit.
         		{
-        			Logger.Log("Found Kit!");
-        			
         			if (this.Configuration.randomProfessionMode && this.Configuration.professionChatMessages)
-        				RocketChatManager.Say(_player.name + " has spawned as a " + _kit + "." +
-        				                      " " + kit.SpawnPercentChance + "% Chance.");
+        				logMan.SayChat(_player.name + " has spawned as a " + _kit + "." +
+        				                      " " + kit.SpawnPercentChance + "% Chance.", EChatMode.SAY);
         			
         			foreach (KitItem kitItem in kit.Items) //Loop through all items
         			{
         				if (!ItemTool.tryForceGiveItem(_player, kitItem.ItemId, kitItem.Amount))
         				{
-        					Logger.Log("Failed to give player item!");        			
+        					logMan.LogMessage(3, "Failed to give player item!");        			
         				}
         			}
         			return;
-
         		}
         		else 
         		{
         			
         		}
-
         	}
+        	
+        	logMan.LogMessage(3, "Kit does not exist!");
         	
         }
         
@@ -202,11 +226,16 @@ namespace fc.spawnkit
         	
         	foreach (Kit k in this.Configuration.Kits) {
         		for (int i = 0; i <= k.SpawnPercentChance; i++) {
-        			weightedProfessionList.Add(k.Name);
+        			if (k.SpawnPercentChance == 0) { //To avoid putting zero chance  (Disabled) kits in the lot. 
+        				logMan.LogMessage(1, "Excluded kit " + k.Name + " from Profession list. Zero spawn chance.");
+        			}
+        			else { 
+        				weightedProfessionList.Add(k.Name); 
+        			}
         		}
         	}
         	
-        	Logger.Log("Profession List Built.");
+        	logMan.LogMessage(1, "Profession List Built.");
         	
         }
         
@@ -232,7 +261,109 @@ namespace fc.spawnkit
         	hotKitsList = this.Configuration.Kits;
         }
         
-        public static void AddToSubscriptionList(string _playerName, Kit _selectedKit) {
+        private void ClearInventory(RocketPlayer _player) {
+			_player.Player.Equipment.dequip();
+			int count = 7;
+			byte b = 7;
+			while (count >= 0 && count <= 7)
+			{
+				byte itemCount = _player.Inventory.getItemCount(b);
+				if (itemCount > 0)
+				{
+					bool finished = false;
+					byte b2 = (byte)(itemCount - 1);
+					while (b2 >= 0 && b2 <= itemCount - 1 && !finished)
+					{
+						if (b2 == 0) finished = true; //TODO Hacky way to prevent index out of bounds exception. Prevent b2 from being used at 0 twice.
+						_player.Inventory.removeItem(b, b2);
+						if (b2 > 0) {
+							b2 -= 1;
+						}
+					}
+				}
+				if (b > 0) {
+					b -= 1;
+				}
+				count--;
+			}
+			
+			logMan.LogMessage(1, _player.CharacterName + "'s inventory has been cleared!");
+        }
+        
+        private void ClearClothing(RocketPlayer _player) {
+        	if (PlayerSavedata.fileExists(_player.Player.SteamChannel.SteamPlayer.SteamPlayerID, "/Player/Clothing.dat"))
+			{
+				PlayerSavedata.deleteFile(_player.Player.SteamChannel.SteamPlayer.SteamPlayerID, "/Player/Clothing.dat");
+			}
+			
+        	_player.Player.SteamChannel.send("tellClothing", ESteamCall.ALL, ESteamPacket.UPDATE_TCP_BUFFER, new object[]
+			{
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0,
+				0
+        	});
+        	
+        	_player.Player.Clothing.save();
+        	_player.Player.Clothing.load();
+        	logMan.LogMessage(1, _player.CharacterName + "'s clothing cleared.");
+		}
+        
+        private bool DoesKitExist(string _kitName) {
+        	foreach (Kit k in this.Configuration.Kits) {
+        		if (k.Name.Equals(_kitName)) {
+        		    	return true;
+        		}
+        	}
+        	return false;
+        }
+        
+        private void DoQueuedUpdateCommands() {
+        	
+        	if (reloadCalled) { //Reload settings if called.
+        		this.Configuration = reLoadedConfig;
+        		GetSettings();
+        		BuildProfessionWeighedList();
+        		logMan.LogMessage(2, "Configuration Reloaded! Any active changes not saved.");
+        		reloadCalled = false;
+        	}
+        	
+        	if (adminGiveRequested) { //Admin gives kit TODO: CLEANUP
+        		
+        		SteamPlayer steamPlayer;
+        			
+        		if (PlayerTool.tryGetSteamPlayer(givePlayerName, out steamPlayer) && DoesKitExist(giveKitName)) { //If steam playername is found.
+        			ClearInventory(RocketPlayer.FromName(givePlayerName));
+        			ClearClothing(RocketPlayer.FromName(givePlayerName));
+        			GivePlayerKit(RocketPlayer.FromName(givePlayerName).Player, giveKitName);
+        			logMan.LogMessage(2, "Admin gave " + givePlayerName + " the " + giveKitName + " kit.");
+        	    }
+        		else {
+        			logMan.LogMessage(3, "givekit: no such player or kit.");
+        		}
+        		
+        		adminGiveRequested = false;
+        	}
+        	
+        	if (saveCalled) { //TODO Doesnt work. Writes defaults.
+        		ApplySettings();
+        		SpawnKitConfiguration test = this.Configuration;
+        		logMan.LogMessage(2, "Configuration written to disk.");
+        		saveCalled = false;
+        	}
+        }
+        
+        public static void AddPlayerToSubscriptionList(string _playerName, Kit _selectedKit) {
         	try {
         		spawnSubscriptionTable.Add(_playerName, _selectedKit);
         	}
@@ -243,13 +374,23 @@ namespace fc.spawnkit
         		
         }
         
-        public static void RemoveFromSubscriptionList(string _playerName, Kit _selectedKit) {
+        public static void RemovePlayerFromSubscriptionList(string _playerName, Kit _selectedKit) {
         	spawnSubscriptionTable.Remove(_playerName);
         }
         
         public static void ReloadConfiguration() {
         	reLoadedConfig = RocketConfigurationHelper.LoadConfiguration<SpawnKitConfiguration>();
         	reloadCalled = true;
+        }
+        
+        public static void SaveConfiguration() {
+        	saveCalled = true;
+        }
+        
+        public static void AdminGiveKit(string _playerCharName, string _kit) {
+        	adminGiveRequested = true;
+        	givePlayerName = _playerCharName;
+        	giveKitName = _kit;
         }
         
         #region SETTERS
