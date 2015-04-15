@@ -162,11 +162,8 @@ namespace fc.spawnkit
         			return;
         		}
         		
-        		else {
-        			SpawnKit.logMan.LogMessage(3, "Incorrect set option.");
-        			return;
-        		}
-        		
+        		SpawnKit.logMan.LogMessage(3, "Invalid set option.");
+        		return;
         	}
         	
         	if (cmd[0].Equals("status") && isAdmin) { //View plugin status.
@@ -228,9 +225,46 @@ namespace fc.spawnkit
         		
         	}
         	
-        	if (cmd[0].Equals("help") {
-        	    	return;
-        	    }
+        	if (cmd[0].ToLower().Equals("help")) {
+        	    	
+        		if (cmd.Length == 1) { //If we are only showing the default help page.
+        			ShowHelp("help");
+        			return;
+        		}
+        		
+        		if (cmd[1].ToLower().Equals("set")) {
+        			ShowHelp("set");
+        			return;
+        		}
+        		
+        		if (cmd[1].ToLower().Equals("status")) {
+        			ShowHelp("status");
+        			return;
+        		}
+        		
+        		if (cmd[1].ToLower().Equals("reload")) {
+        			ShowHelp("reload");
+        			return;
+        		}
+        		
+        		if (cmd[1].ToLower().Equals("save")) {
+        			ShowHelp("save");
+        			return;
+        		}
+        		
+        		if (cmd[1].ToLower().Equals("givekit")) {
+        			ShowHelp("givekit");
+        			return;
+        		}
+        		
+        		if (cmd[1].ToLower().Equals("list")) {
+        			ShowHelp("list");
+        			return;
+        		}
+        		
+        		SpawnKit.logMan.LogMessage(3, "Invalid help topic.");
+        		return;
+        	}
         	
         }
         
@@ -248,7 +282,77 @@ namespace fc.spawnkit
         	SpawnKit.logMan.LogMessage(2, "- Profession Chat Messages Enabled: " + SpawnKit.GetProfessionChatMessagesEnabled());
         }
         
+        /*
+         * Shows help topics to the console.
+         */
         private void ShowHelp(string _topic) {
+        	
+        	if (_topic.ToLower().Equals("help")) {
+        		SpawnKit.logMan.LogMessage(2, "-- SpawnKit Commands --");
+        		SpawnKit.logMan.LogMessage(2, "* set - Change plugin settings. Admin only.");
+        		SpawnKit.logMan.LogMessage(2, "* status - Display current plugin status. Admin only.");
+        		SpawnKit.logMan.LogMessage(2, "* reload - Reload SpawnKit settings file. Admin only.");
+        		SpawnKit.logMan.LogMessage(2, "* save - Save current settings into settings file. Admin only.");
+        		SpawnKit.logMan.LogMessage(2, "* givekit - Clear players inventory and give kit. Admin only.");
+        		SpawnKit.logMan.LogMessage(2, "* list - Shows a list of kits in game chat. sk permission..");
+        		SpawnKit.logMan.LogMessage(2, "* class - Select a class. Will get upon death. sk permission.");
+				SpawnKit.logMan.LogMessage(2, "-- Use 'sk help command' for more info about each. --");        		
+        		return;
+        	}
+        	
+        	if (_topic.ToLower().Equals("set")) {
+        		SpawnKit.logMan.LogMessage(2, "*-- SpawnKit Set Command Help --");
+        		SpawnKit.logMan.LogMessage(2, "* - sk set <setting> <value> -");
+        		SpawnKit.logMan.LogMessage(2, "* enabled - true/false. Is plugin enabled.");
+        		SpawnKit.logMan.LogMessage(2, "* cooldown - on/off. Is kit cooldown enabled.");
+        		SpawnKit.logMan.LogMessage(2, "* cooldowntime - seconds. Kit cooldown time length.");
+        		SpawnKit.logMan.LogMessage(2, "* cooldownmessages - on/off. Chat cooldown messages.");
+        		SpawnKit.logMan.LogMessage(2, "* professionmode - on/off. Random kit spawn profession mode.");
+        		SpawnKit.logMan.LogMessage(2, "* professionmessages - on/off. Chat profession messages.");
+        		SpawnKit.logMan.LogMessage(2, "* subscriptionmode - on/off. Kit subscription mode.");
+        		return;
+        	}
+        	
+        	if (_topic.ToLower().Equals("status")) {
+        		SpawnKit.logMan.LogMessage(2," -- SpawnKit Status Command Help --");
+        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk status' ");
+        		SpawnKit.logMan.LogMessage(2," * Fuction: Shows current plugin settings.");
+        		return;
+        	}
+        	
+        	if (_topic.ToLower().Equals("reload")) {
+        		SpawnKit.logMan.LogMessage(2," -- SpawnKit Reload Command Help --");
+        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk reload' ");
+        		SpawnKit.logMan.LogMessage(2," * Fuction: Reloads settings file. Changes made using");
+        		SpawnKit.logMan.LogMessage(2,"   'set' command will be lost.");
+        		return;
+        	}        	
+        	
+        	if (_topic.ToLower().Equals("save")) {
+        		SpawnKit.logMan.LogMessage(2," -- SpawnKit Save Command Help --");
+        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk save' ");
+        		SpawnKit.logMan.LogMessage(2," * Fuction: Writes settings file using current settings.");
+        		SpawnKit.logMan.LogMessage(2,"   (NON FUNCTIONAL!)");
+        		return;
+        	}
+        	
+        	if (_topic.ToLower().Equals("givekit")) {
+        		SpawnKit.logMan.LogMessage(2," -- SpawnKit Givekit Command Help --");
+        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk givekit <player> <kit>' ");
+        		SpawnKit.logMan.LogMessage(2," * Fuction: Clears a players inventory and gives them a kit.");
+        		SpawnKit.logMan.LogMessage(2,"   The <player> field can take no spaces. Write the first few");
+        		SpawnKit.logMan.LogMessage(2,"   letters of the players name. (Like admin in vanilla)");
+        		return;
+        	}
+        	
+        	if (_topic.ToLower().Equals("list")) {
+        		SpawnKit.logMan.LogMessage(2," -- SpawnKit Givekit Command Help --");
+        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk givekit <player> <kit>' ");
+        		SpawnKit.logMan.LogMessage(2," * Fuction: Clears a players inventory and gives them a kit.");
+        		SpawnKit.logMan.LogMessage(2,"   The <player> field can take no spaces. Write the first few");
+        		SpawnKit.logMan.LogMessage(2,"   letters of the players name. (Like admin in vanilla)");
+        		return;
+        	}
         	
         }
     }
