@@ -58,11 +58,11 @@ namespace fc.spawnkit
 		
 		public static LogMan logMan = new LogMan(); //Declare logman for use.
 		
-		bool subscribedToRespawnEvent = false;
+		bool subscribedToRespawnEvent = false; //Used to make sure we only subscribe to the revive event once. Also used to run init only once.
     	
-    	System.Random rand = new System.Random();
+    	System.Random rand = new System.Random(); //Random used for random kit selection.
     	
-    	List<string> weightedProfessionList = new List<string>();
+    	List<string> weightedProfessionList = new List<string>(); //List of kits
     	
     	int cooldownSecondsRemaining;
     	
@@ -83,7 +83,6 @@ namespace fc.spawnkit
             	}
             	BuildProfessionWeighedList();
             	GetSettings();
-            	logMan.setDebugMode(true);
             	subscribedToRespawnEvent = true;
         	}
         	
@@ -270,7 +269,7 @@ namespace fc.spawnkit
         	hotKitsList = this.Configuration.Kits;
         }
         
-        private void ClearInventory(RocketPlayer _player) {
+        private void ClearInventory(RocketPlayer _player) { //TODO Feels hacky. Figure out a better way.
 			_player.Player.Equipment.dequip();
 			int count = 7;
 			byte b = 7;
@@ -299,7 +298,7 @@ namespace fc.spawnkit
 			logMan.LogMessage(1, _player.CharacterName + "'s inventory has been cleared!");
         }
         
-        private void ClearClothing(RocketPlayer _player) {
+        private void ClearClothing(RocketPlayer _player) { //TODO Feels hacky. Figure out a better way.
         	if (PlayerSavedata.fileExists(_player.Player.SteamChannel.SteamPlayer.SteamPlayerID, "/Player/Clothing.dat"))
 			{
 				PlayerSavedata.deleteFile(_player.Player.SteamChannel.SteamPlayer.SteamPlayerID, "/Player/Clothing.dat");

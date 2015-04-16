@@ -46,7 +46,7 @@ namespace fc.spawnkit
 				return new SpawnKitConfiguration() 
 				{
 					globalEnabled = true,
-					globalCooldownEnabled = false,
+					globalCooldownEnabled = true,
 					cooldownInSecs = 300,
 					cooldownChatMessages = true,
 					defaultKit = "Default",
@@ -71,7 +71,7 @@ namespace fc.spawnkit
 						new Kit
 						{
 							Name = "Rifleman",
-							SpawnPercentChance = 25,
+							SpawnPercentChance = 16,
 							Items = new List<KitItem>
 							{
 								new KitItem(ItemDB_All.Military_Top, 1),
@@ -92,7 +92,7 @@ namespace fc.spawnkit
 						new Kit
 						{
 							Name = "Assault",
-							SpawnPercentChance = 25,
+							SpawnPercentChance = 16,
 							Items = new List<KitItem>
 							{
 								new KitItem(ItemDB_All.Military_Top, 1),
@@ -111,7 +111,7 @@ namespace fc.spawnkit
 						new Kit
 						{
 							Name = "Gunner",
-							SpawnPercentChance = 25,
+							SpawnPercentChance = 16,
 							Items = new List<KitItem>
 							{
 								new KitItem(ItemDB_All.Military_Top, 1),
@@ -131,7 +131,7 @@ namespace fc.spawnkit
 						new Kit
 						{
 							Name = "Marksman",
-							SpawnPercentChance = 25,
+							SpawnPercentChance = 16,
 							Items = new List<KitItem>
 							{
 								new KitItem(ItemDB_All.Military_Top, 1),
@@ -151,7 +151,7 @@ namespace fc.spawnkit
 						new Kit
 						{
 							Name = "Medic",
-							SpawnPercentChance = 25,
+							SpawnPercentChance = 16,
 							Items = new List<KitItem>
 							{
 								new KitItem(ItemDB_All.Medic_Top, 1),
@@ -172,7 +172,7 @@ namespace fc.spawnkit
 						new Kit
 						{
 							Name = "Supply",
-							SpawnPercentChance = 25,
+							SpawnPercentChance = 16,
 							Items = new List<KitItem>
 							{
 								new KitItem(ItemDB_All.Prisoner_Top, 1),
