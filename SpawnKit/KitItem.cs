@@ -1,5 +1,5 @@
 ﻿/*****
- * KitItem - An item that goes into a 'kit' for SpawnKit.
+ * KitItem - An item that goes into a 'kit' for SpawnKit. Represents and ItemID and amount.
  * 
  * Copyright (C) 2015 False_Chicken
  * Contact: jmdevsupport@gmail.com
