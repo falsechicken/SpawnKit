@@ -16,9 +16,6 @@ using fc.logman;
 
 namespace fc.spawnkit
 {
-    
-	
-	
 	public class SpawnKit : RocketPlugin<SpawnKitConfiguration>
     {
 		#region HOT SWAP SETTINGS VARS
@@ -60,7 +57,7 @@ namespace fc.spawnkit
     	//Table with the players name as the key and the time they got a kit as the DateTime
     	static Dictionary<string, DateTime> cooldownTable = new Dictionary<string, DateTime>();
     	
-    	static Dictionary<string, Kit> spawnSubscriptionTable = new Dictionary<string, Kit>();
+    	static Dictionary<string, Kit> kitSubscriptionTable = new Dictionary<string, Kit>();
     	
         private void FixedUpdate()
         {	
@@ -91,8 +88,8 @@ namespace fc.spawnkit
         		if (!this.Configuration.globalCooldownEnabled) { //If we have no cooldown.
         			
         			if (this.Configuration.subscriptionMode) {
-        				if (spawnSubscriptionTable.ContainsKey(_player.CharacterName)) {
-        					GivePlayerKit(_player.Player, spawnSubscriptionTable[_player.CharacterName].Name);
+        				if (kitSubscriptionTable.ContainsKey(_player.CharacterName)) {
+        					GivePlayerKit(_player.Player, kitSubscriptionTable[_player.CharacterName].Name);
         					return;
         				}
         				else {
@@ -117,8 +114,8 @@ namespace fc.spawnkit
         			if ((DateTime.Now - dtKitUsedLast).TotalSeconds > this.Configuration.cooldownInSecs) {
         					
         				if (this.Configuration.subscriptionMode) {
-        					if (spawnSubscriptionTable.ContainsKey(_player.CharacterName)) { //If the player has subscribed to a kit.
-        						GivePlayerKit(_player.Player, spawnSubscriptionTable[_player.CharacterName].Name);
+        					if (kitSubscriptionTable.ContainsKey(_player.CharacterName)) { //If the player has subscribed to a kit.
+        						GivePlayerKit(_player.Player, kitSubscriptionTable[_player.CharacterName].Name);
         						cooldownTable.Remove(_player.SteamName);
         						cooldownTable.Add(_player.SteamName, DateTime.Now);
         						return;
@@ -157,8 +154,8 @@ namespace fc.spawnkit
         		else //If the player is not in the cooldown list.
         		{
         			if (this.Configuration.subscriptionMode) {
-        				if (spawnSubscriptionTable.ContainsKey(_player.CharacterName)) { //If the player has subscribed to a kit.
-        					GivePlayerKit(_player.Player, spawnSubscriptionTable[_player.CharacterName].Name);
+        				if (kitSubscriptionTable.ContainsKey(_player.CharacterName)) { //If the player has subscribed to a kit.
+        					GivePlayerKit(_player.Player, kitSubscriptionTable[_player.CharacterName].Name);
         					cooldownTable.Add(_player.SteamName, DateTime.Now);
         					return;
         				}
@@ -365,17 +362,17 @@ namespace fc.spawnkit
         
         public static void AddPlayerToSubscriptionList(string _playerName, Kit _selectedKit) {
         	try {
-        		spawnSubscriptionTable.Add(_playerName, _selectedKit);
+        		kitSubscriptionTable.Add(_playerName, _selectedKit);
         	}
         	catch (ArgumentException e) {
-        		spawnSubscriptionTable.Remove(_playerName);
-        		spawnSubscriptionTable.Add(_playerName, _selectedKit);
+        		kitSubscriptionTable.Remove(_playerName);
+        		kitSubscriptionTable.Add(_playerName, _selectedKit);
         	}
         		
         }
         
         public static void RemovePlayerFromSubscriptionList(string _playerName, Kit _selectedKit) {
-        	spawnSubscriptionTable.Remove(_playerName);
+        	kitSubscriptionTable.Remove(_playerName);
         }
         
         public static void ReloadConfiguration() {
@@ -459,6 +456,10 @@ namespace fc.spawnkit
         
         public static List<Kit> GetKitsList() {
         	return hotKitsList;
+        }
+        
+        public static Dictionary<string, Kit> GetSubscriptionList() {
+        	return kitSubscriptionTable;
         }
         
         #endregion

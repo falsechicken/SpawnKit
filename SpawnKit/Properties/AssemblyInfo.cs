@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SpawnKit")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Enables random spawn kits, classes, and more for the Rocket Server Wrapper.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SpawnKit")]
@@ -28,4 +28,4 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can use the default the Revision and 
 // Build Numbers by using the '*' as shown below:
-[assembly: AssemblyVersion("0.9.0")]
+[assembly: AssemblyVersion("0.9.5")]
