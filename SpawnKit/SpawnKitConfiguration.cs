@@ -50,149 +50,109 @@ namespace fc.spawnkit
 					cooldownInSecs = 300,
 					cooldownChatMessages = true,
 					defaultKit = "Default",
-					randomProfessionMode = false,
-					professionChatMessages = false,
+					randomProfessionMode = true,
+					professionChatMessages = true,
 					subscriptionMode = false,
 					
 					Kits = new List<Kit>
 					{
 						new Kit
 						{
-							
-							Name = "Default",
-							SpawnPercentChance = 0,
+							Name = "Civilian",
+							SpawnPercentChance = 23,
 							Items = new List<KitItem>
 							{
+								new KitItem(ItemDB_All.Green_Shirt, 1),
+								new KitItem(ItemDB_All.Trouser_Pants, 1),
 								new KitItem(ItemDB_All.Swiss_Knife, 1),
-								new KitItem(ItemDB_All.Tape, 1)
+								new KitItem(ItemDB_All.Apple_Juice, 1),
+								new KitItem(ItemDB_All.Chips, 1),
+							} 
+						},
+						
+						new Kit
+						{
+							Name = "Civilian2",
+							SpawnPercentChance = 23,
+							Items = new List<KitItem>
+							{
+								new KitItem(ItemDB_All.Grocer_Top, 1),
+								new KitItem(ItemDB_All.Work_Jeans, 1),
+								new KitItem(ItemDB_All.Kitchen_Knife, 1),
+								new KitItem(ItemDB_All.Bottled_Water, 1),
+								new KitItem(ItemDB_All.Canned_Chicken_Soup, 1),
 							}
 						},
 						
 						new Kit
 						{
-							Name = "Rifleman",
-							SpawnPercentChance = 16,
+							Name = "Civilian3",
+							SpawnPercentChance = 23,
 							Items = new List<KitItem>
 							{
-								new KitItem(ItemDB_All.Military_Top, 1),
-								new KitItem(ItemDB_All.Military_Bottom, 1),
-								new KitItem(ItemDB_All.Military_Vest, 1),
-								new KitItem(ItemDB_All.Eaglefire, 1),
-								new KitItem(ItemDB_All.Military_Magazine, 3),
-								new KitItem(ItemDB_All.Colt, 1),
-								new KitItem(ItemDB_All.Colt_Magazine, 2),
-								new KitItem(ItemDB_All.Grenade, 2),
-								new KitItem(ItemDB_All.Black_Smoke, 1),
-								new KitItem(ItemDB_All.Military_Knife, 1),
-								new KitItem(ItemDB_All.Black_Bandana, 1),
-								
-							}
-						},
-						
-						new Kit
-						{
-							Name = "Assault",
-							SpawnPercentChance = 16,
-							Items = new List<KitItem>
-							{
-								new KitItem(ItemDB_All.Military_Top, 1),
-								new KitItem(ItemDB_All.Military_Bottom, 1),
-								new KitItem(ItemDB_All.Military_Vest, 1),
-								new KitItem(ItemDB_All.Bluntforce, 1),
-								new KitItem(ItemDB_All.Tweleve_Gauge_Shells, 5),
-								new KitItem(ItemDB_All.Cobra, 1),
-								new KitItem(ItemDB_All.Cobra_Magazine, 2),
-								new KitItem(ItemDB_All.Grenade, 3),
-								new KitItem(ItemDB_All.Military_Knife, 1),
-								new KitItem(ItemDB_All.Blue_Bandana, 1),
-							}
-						},
-						
-						new Kit
-						{
-							Name = "Gunner",
-							SpawnPercentChance = 16,
-							Items = new List<KitItem>
-							{
-								new KitItem(ItemDB_All.Military_Top, 1),
-								new KitItem(ItemDB_All.Military_Bottom, 1),
-								new KitItem(ItemDB_All.Military_Vest, 1),
-								new KitItem(ItemDB_All.Nykorev, 1),
-								new KitItem(ItemDB_All.Nykorev_Box, 3),
-								new KitItem(ItemDB_All.Cobra, 1),
-								new KitItem(ItemDB_All.Cobra_Magazine, 2),
-								new KitItem(ItemDB_All.Grenade, 1),
-								new KitItem(ItemDB_All.Black_Smoke, 2),
-								new KitItem(ItemDB_All.Military_Knife, 1),
-								new KitItem(ItemDB_All.Green_Bandana, 1),
-							}
-						},
-						
-						new Kit
-						{
-							Name = "Marksman",
-							SpawnPercentChance = 16,
-							Items = new List<KitItem>
-							{
-								new KitItem(ItemDB_All.Military_Top, 1),
-								new KitItem(ItemDB_All.Military_Bottom, 1),
-								new KitItem(ItemDB_All.Military_Vest, 1),
-								new KitItem(ItemDB_All.Snayperskya, 1),
-								new KitItem(ItemDB_All.Snayperskya_Magazine, 3),
-								new KitItem(ItemDB_All.Ace, 1),
-								new KitItem(ItemDB_All.Ace_Clip, 2),
-								new KitItem(ItemDB_All.Military_Knife, 1),
-								new KitItem(ItemDB_All.Binoculars, 1),
-							    new KitItem(ItemDB_All.Black_Smoke, 3),
-								new KitItem(ItemDB_All.Red_Bandana, 1),
+								new KitItem(ItemDB_All.Orange_Hoodie, 1),
+								new KitItem(ItemDB_All.Work_Jeans, 1),
+								new KitItem(ItemDB_All.Kitchen_Knife, 1),
+								new KitItem(ItemDB_All.Bottled_Water, 1),
+								new KitItem(ItemDB_All.Candy_Bar, 1),
 							}
 						},
 						
 						new Kit
 						{
 							Name = "Medic",
-							SpawnPercentChance = 16,
+							SpawnPercentChance = 12,
 							Items = new List<KitItem>
 							{
 								new KitItem(ItemDB_All.Medic_Top, 1),
-								new KitItem(ItemDB_All.Military_Bottom, 1),
-								new KitItem(ItemDB_All.Military_Vest, 1),
-								new KitItem(ItemDB_All.Hawkhound, 1),
-								new KitItem(ItemDB_All.Hawkhound_Magazine, 3),
-								new KitItem(ItemDB_All.Colt, 1),
-								new KitItem(ItemDB_All.Colt_Magazine, 2),
-								new KitItem(ItemDB_All.Military_Knife, 1),
-								new KitItem(ItemDB_All.White_Bandana, 1),
-								new KitItem(ItemDB_All.Grenade, 1),
-								new KitItem(ItemDB_All.Dressing, 4),
+								new KitItem(ItemDB_All.Medic_Bottom, 1),
+								new KitItem(ItemDB_All.Dressing, 2),
+								new KitItem(ItemDB_All.Bottled_Water, 1),
 								new KitItem(ItemDB_All.Suturekit, 1),
 							}
 						},
 						
 						new Kit
 						{
-							Name = "Supply",
-							SpawnPercentChance = 16,
+							Name = "EscapedPrisoner",
+							SpawnPercentChance = 10,
 							Items = new List<KitItem>
 							{
 								new KitItem(ItemDB_All.Prisoner_Top, 1),
-								new KitItem(ItemDB_All.Military_Bottom, 1),
-								new KitItem(ItemDB_All.Military_Vest, 1),
-								new KitItem(ItemDB_All.Military_Helmet, 1),
-								new KitItem(ItemDB_All.Zubeknakov, 1),
-								new KitItem(ItemDB_All.Ranger_Magazine, 2),
-								new KitItem(ItemDB_All.Military_Knife, 1),
-								new KitItem(ItemDB_All.White_Bandana, 1),
-								new KitItem(ItemDB_All.Grenade, 4),
-								new KitItem(ItemDB_All.Orange_Bandana, 1),
-								new KitItem(ItemDB_All.Military_Ammunition_Box, 3),
-								new KitItem(ItemDB_All.Civilian_Ammunition_Box, 2),
-								new KitItem(ItemDB_All.Ranger_Ammunition_Box, 2),
+								new KitItem(ItemDB_All.Prisoner_Bottom, 1),
+								new KitItem(ItemDB_All.Butterfly_Knife, 1),
 							}
 						},
 						
+						new Kit
+						{
+							Name = "PoliceOfficer",
+							SpawnPercentChance = 6,
+							Items = new List<KitItem>
+							{
+								new KitItem(ItemDB_All.Police_Top, 1),
+								new KitItem(ItemDB_All.Police_Bottom, 1),
+								new KitItem(ItemDB_All.Police_Cap, 1),
+								new KitItem(ItemDB_All.Colt, 1),
+								new KitItem(ItemDB_All.Colt_Magazine, 1),
+							}
+						},
+						
+						new Kit
+						{
+							Name = "Soldier",
+							SpawnPercentChance = 3,
+							Items = new List<KitItem>
+							{
+								new KitItem(ItemDB_All.Military_Top, 1),
+								new KitItem(ItemDB_All.Military_Bottom, 1),
+								new KitItem(ItemDB_All.Beret, 1),
+								new KitItem(ItemDB_All.Maplestrike, 1),
+								new KitItem(ItemDB_All.Military_Magazine, 1),
+								new KitItem(ItemDB_All.MRE, 1),
+							}
+						},
 					},
-					
 				};
 			}
 		}
