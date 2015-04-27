@@ -4,6 +4,8 @@ Provides spawn kits, classes, and a few extra bells and whistles. - False_Chicke
 
 Contact: jmdevsupport@gmail.com
 
+Source Code: https://github.com/falsechicken/SpawnKit
+
 Licensed under the GPLv2: https://www.gnu.org/licenses/gpl-2.0.txt
 
 - Features -
