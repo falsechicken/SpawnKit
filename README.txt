@@ -4,7 +4,7 @@ Provides spawn kits, classes, and a few extra bells and whistles. - False_Chicke
 
 Contact: jmdevsupport@gmail.com
 
-Licensed under the GPLv2.
+Licensed under the GPLv2: https://www.gnu.org/licenses/gpl-2.0.txt
 
 - Features -
 
@@ -20,5 +20,9 @@ Licensed under the GPLv2.
 	deathmatch like scenarios.
 	
 * Live Configuration Modifications: All settings (Other than kit definitions) can be modified in game using
-	the 'sk set <option> <argument>' command. Turn modes on and off, enable or disable cooldown, etc..
-	(Admin only)
+	the 'sk set <option> <argument>' command. Turn modes on and off, enable or disable cooldown, etc.. However
+	these settings will not save to the config file. (Admin only)
+	
+Most of the documentation is in game using the 'sk help' command from the server console and in the example
+configurations provided in the 'Example Config' folder. I like and am much better at writing code than
+documentation.

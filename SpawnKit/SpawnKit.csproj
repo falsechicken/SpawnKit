@@ -41,7 +41,7 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="RocketAPI">
-      <HintPath>..\..\..\Rocket %284%29\RocketAPI.dll</HintPath>
+      <HintPath>C:\Users\Dev\Documents\Dev Libs\Rocket\RocketAPI.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -52,7 +52,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\Rocket %284%29\UnityEngine.dll</HintPath>
+      <HintPath>C:\Users\Dev\Documents\Dev Libs\Rocket\UnityEngine.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

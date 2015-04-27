@@ -57,8 +57,6 @@ namespace fc.spawnkit
 		#endregion
 		
 		public static LogMan logMan = new LogMan(); //Declare logman for use.
-		
-		bool subscribedToRespawnEvent = false; //Used to make sure we only subscribe to the revive event once. Also used to run init only once.
     	
     	System.Random rand = new System.Random(); //Random used for random kit selection.
     	
@@ -66,25 +64,26 @@ namespace fc.spawnkit
     	
     	int cooldownSecondsRemaining;
     	
-    	//Table with the players name as the key and the time they got a kit as the DateTime
+    	//Table with the players name as the key and the time they got a kit as the value. Used for kit cooldown.
     	static Dictionary<string, DateTime> cooldownTable = new Dictionary<string, DateTime>();
     	
+    	//Table with players name as the key and the Kit they select as the value. Used to track who subscribed to what kit.
     	static Dictionary<string, Kit> kitSubscriptionTable = new Dictionary<string, Kit>();
     	
-        private void FixedUpdate()
+        protected override void Load()
+        {
+			RocketPlayerEvents.OnPlayerRevive += OnPlayerSpawn;
+            logMan.LogMessage(2, "Kits Loaded:");
+            foreach (Kit k in this.Configuration.Kits)
+            {
+            	logMan.LogMessage(2, k.Name);
+            }
+            BuildProfessionWeighedList();
+            GetSettings();
+        }
+    	
+    	private void FixedUpdate()
         {	
-        	if (subscribedToRespawnEvent == false && this.Loaded) //Initialize once.
-        	{
-            	RocketPlayerEvents.OnPlayerRevive += OnPlayerSpawn;
-            	logMan.LogMessage(2, "Kits Loaded:");
-            	foreach (Kit k in this.Configuration.Kits)
-            	{
-            		logMan.LogMessage(2, k.Name);
-            	}
-            	BuildProfessionWeighedList();
-            	GetSettings();
-            	subscribedToRespawnEvent = true;
-        	}
         	
         	DoQueuedUpdateCommands();
         	
