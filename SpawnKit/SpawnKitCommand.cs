@@ -225,12 +225,13 @@ namespace fc.spawnkit
         				classListString = classListString + k.Name + ", ";
         			}
         			
-        			SpawnKit.logMan.SayChat("Class List: " + classListString, EChatMode.SAY);
-        			SpawnKit.logMan.SayChat("/sk class ClassName to pick class.", EChatMode.SAY);
+        			SpawnKit.logMan.SayChatToPlayer(caller, "Class List: " + classListString);
+        			SpawnKit.logMan.SayChatToPlayer(caller, "/sk class ClassName to pick class.");
         			return;
         		}
         		
-        		SpawnKit.logMan.SayChat("Subscription mode disabled " + caller.CharacterName + ".", EChatMode.SAY);
+        		SpawnKit.logMan.SayChatToPlayer(caller, "Subscription mode disabled.");
+        		return;
         		
         	}
         	
@@ -241,20 +242,20 @@ namespace fc.spawnkit
         				foreach (Kit k in SpawnKit.GetKitsList()) { //Loop through kits to see if they picked a valid class.
         					if (cmd[1].ToLower().Equals(k.Name.ToLower())) { //They did.
         						SpawnKit.AddPlayerToSubscriptionList(charName, k);
-        						SpawnKit.logMan.SayChat("Class selected " + charName, EChatMode.SAY);
+        						SpawnKit.logMan.SayChatToPlayer(caller, "Class selected.");
         						return;
 	        				}
         				}
-    	    			SpawnKit.logMan.SayChat("No such class " + charName, EChatMode.SAY);
+    	    			SpawnKit.logMan.SayChatToPlayer(caller, "No such class.");
 	        			return;
         			}
         			catch (Exception e) {
-        				SpawnKit.logMan.SayChat("No such class " + charName, EChatMode.SAY);
+        				SpawnKit.logMan.SayChatToPlayer(caller, "No such class.");
         				return;
         			}
         		}
         		
-        		SpawnKit.logMan.SayChat("Subscription mode disabled " + caller.CharacterName + ".", EChatMode.SAY);
+        		SpawnKit.logMan.SayChatToPlayer(caller, "Subscription mode disabled.");
         		return;
         		
         	}

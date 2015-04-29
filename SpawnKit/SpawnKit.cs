@@ -157,7 +157,7 @@ namespace fc.spawnkit
         				cooldownSecondsRemaining = this.Configuration.cooldownInSecs - (int)(DateTime.Now - dtKitUsedLast).TotalSeconds;
         					
         				if (this.Configuration.cooldownChatMessages) //If we are to send messages to players.
-        					logMan.SayChat(_player.CharacterName + " " + cooldownSecondsRemaining + " seconds remaining until kit available.", EChatMode.SAY);
+        					logMan.SayChatToPlayer(_player, cooldownSecondsRemaining + " seconds remaining until kit available.");
         			}
         		}
         		
@@ -199,8 +199,8 @@ namespace fc.spawnkit
         		if (kit.Name.Equals(_kit)) //Found a matching kit.
         		{
         			if (this.Configuration.randomProfessionMode && this.Configuration.professionChatMessages)
-        				logMan.SayChat(_player.name + " has spawned as a " + _kit + "." +
-        				                      " " + kit.SpawnPercentChance + "% Chance.", EChatMode.SAY);
+        				logMan.SayChatToPlayer(RocketPlayer.FromPlayer(_player), "You spawned as a " + _kit + "." +
+        				                      " " + kit.SpawnPercentChance + "% Chance.");
         			
         			foreach (KitItem kitItem in kit.Items) //Loop through all items
         			{
