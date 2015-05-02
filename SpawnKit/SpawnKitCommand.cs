@@ -21,8 +21,6 @@
 using System;
 using Rocket.Logging;
 using Rocket.RocketAPI;
-using SDG;
-using fc.spawnkit;
 
 namespace fc.spawnkit
 {

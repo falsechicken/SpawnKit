@@ -99,20 +99,20 @@ namespace fc.spawnkit
         			
         			if (this.Configuration.subscriptionMode) {
         				if (kitSubscriptionTable.ContainsKey(_player.CharacterName)) {
-        					GivePlayerKit(_player.Player, kitSubscriptionTable[_player.CharacterName].Name);
+        					GivePlayerKit(_player.Player, kitSubscriptionTable[_player.CharacterName].Name, false);
         					return;
         				}
         				else {
-        					GivePlayerKit(_player.Player, this.Configuration.defaultKit);
+        					GivePlayerKit(_player.Player, this.Configuration.defaultKit, false);
         					return;
         				}
         			}
         			
         			if (!this.Configuration.randomProfessionMode) {
-        				GivePlayerKit(_player.Player, this.Configuration.defaultKit);
+        				GivePlayerKit(_player.Player, this.Configuration.defaultKit, false);
         				return;
         			}
-        			GivePlayerKit(_player.Player, GetChancedProfession());
+        			GivePlayerKit(_player.Player, GetChancedProfession(), false);
         			return;
         		}
         			
@@ -125,13 +125,13 @@ namespace fc.spawnkit
         					
         				if (this.Configuration.subscriptionMode) {
         					if (kitSubscriptionTable.ContainsKey(_player.CharacterName)) { //If the player has subscribed to a kit.
-        						GivePlayerKit(_player.Player, kitSubscriptionTable[_player.CharacterName].Name);
+        						GivePlayerKit(_player.Player, kitSubscriptionTable[_player.CharacterName].Name, false);
         						cooldownTable.Remove(_player.SteamName);
         						cooldownTable.Add(_player.SteamName, DateTime.Now);
         						return;
         					}
         					else { //If the player has not subscribed give them the config default.
-	        					GivePlayerKit(_player.Player, this.Configuration.defaultKit);
+	        					GivePlayerKit(_player.Player, this.Configuration.defaultKit, false);
 	        					cooldownTable.Remove(_player.SteamName);
         						cooldownTable.Add(_player.SteamName, DateTime.Now);
         						return;
@@ -139,13 +139,13 @@ namespace fc.spawnkit
         				}
         				
         				if (this.Configuration.randomProfessionMode) {
-        					GivePlayerKit(_player.Player, GetChancedProfession());
+        					GivePlayerKit(_player.Player, GetChancedProfession(), false);
         					cooldownTable.Remove(_player.SteamName);
         					cooldownTable.Add(_player.SteamName, DateTime.Now);
         					return;
         				}
         				else {
-        					GivePlayerKit(_player.Player, this.Configuration.defaultKit);
+        					GivePlayerKit(_player.Player, this.Configuration.defaultKit, false);
         					cooldownTable.Remove(_player.SteamName);
         					cooldownTable.Add(_player.SteamName, DateTime.Now);
         					return;
@@ -165,24 +165,24 @@ namespace fc.spawnkit
         		{
         			if (this.Configuration.subscriptionMode) {
         				if (kitSubscriptionTable.ContainsKey(_player.CharacterName)) { //If the player has subscribed to a kit.
-        					GivePlayerKit(_player.Player, kitSubscriptionTable[_player.CharacterName].Name);
+        					GivePlayerKit(_player.Player, kitSubscriptionTable[_player.CharacterName].Name, false);
         					cooldownTable.Add(_player.SteamName, DateTime.Now);
         					return;
         				}
         				else { //If the player has not subscribed give them the config default.
-	        				GivePlayerKit(_player.Player, this.Configuration.defaultKit);
+	        				GivePlayerKit(_player.Player, this.Configuration.defaultKit, false);
 							cooldownTable.Add(_player.SteamName, DateTime.Now);
         					return;
         				}
         			}
         			
         			if (this.Configuration.randomProfessionMode) { //If we are in random profession mode.
-        				GivePlayerKit(_player.Player, GetChancedProfession());
+        				GivePlayerKit(_player.Player, GetChancedProfession(), false);
         				cooldownTable.Add(_player.SteamName, DateTime.Now);
         				return;
         			}
         			else {
-        				GivePlayerKit(_player.Player, this.Configuration.defaultKit);
+        				GivePlayerKit(_player.Player, this.Configuration.defaultKit, false);
         				cooldownTable.Add(_player.SteamName, DateTime.Now);
         				return;
         			}
@@ -192,16 +192,15 @@ namespace fc.spawnkit
 
         }
         
-        private void GivePlayerKit(Player _player, string _kit)
+        private void GivePlayerKit(Player _player, string _kit, bool _adminGive)
         {	
         	foreach (Kit kit in this.Configuration.Kits) //Loop through kits and see if kit with name exists.
         	{
         		if (kit.Name.Equals(_kit)) //Found a matching kit.
         		{
-        			if (this.Configuration.randomProfessionMode && this.Configuration.professionChatMessages)
-        				logMan.SayChatToPlayer(RocketPlayer.FromPlayer(_player), "You spawned as a " + _kit + "." +
-        				                      " " + kit.SpawnPercentChance + "% Chance.");
-        			
+        			if (this.Configuration.randomProfessionMode && this.Configuration.professionChatMessages && _adminGive == false)
+        					logMan.SayChatToPlayer(RocketPlayer.FromPlayer(_player), "You spawned as a " + _kit + "." +
+        					                      " " + kit.SpawnPercentChance + "% Chance.");
         			foreach (KitItem kitItem in kit.Items) //Loop through all items
         			{
         				if (!ItemTool.tryForceGiveItem(_player, kitItem.ItemId, kitItem.Amount))
@@ -298,7 +297,7 @@ namespace fc.spawnkit
         			
         		if (PlayerTool.tryGetSteamPlayer(givePlayerName, out steamPlayer) && DoesKitExist(giveKitName)) { //If steam playername is found.
         			ClearInventory(RocketPlayer.FromName(givePlayerName));
-        			GivePlayerKit(RocketPlayer.FromName(givePlayerName).Player, giveKitName);
+        			GivePlayerKit(RocketPlayer.FromName(givePlayerName).Player, giveKitName, true);
         			logMan.LogMessage(2, "Admin gave " + givePlayerName + " the " + giveKitName + " kit.");
         	    }
         		else {
