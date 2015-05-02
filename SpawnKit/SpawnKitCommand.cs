@@ -22,7 +22,7 @@ using System;
 using Rocket.Logging;
 using Rocket.RocketAPI;
 
-namespace fc.spawnkit
+namespace FC.SpawnKit
 {
     public class SpawnKitCommand : IRocketCommand
     {

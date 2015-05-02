@@ -20,7 +20,7 @@
  
 using System;
 using System.Xml.Serialization;
-namespace fc.spawnkit
+namespace FC.SpawnKit
 {
 	public class KitItem
 	{

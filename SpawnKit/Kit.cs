@@ -21,7 +21,7 @@
 using System;
 using System.Collections.Generic;
 using System.Xml.Serialization;
-namespace fc.spawnkit
+namespace FC.SpawnKit
 {
 	public class Kit
 	{

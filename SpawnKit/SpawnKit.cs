@@ -24,9 +24,9 @@ using Rocket.RocketAPI;
 using Rocket.RocketAPI.Events;
 using SDG;
 using UnityEngine;
-using fc.logman;
+using FC.LogMan;
 
-namespace fc.spawnkit
+namespace FC.SpawnKit
 {
 	public class SpawnKit : RocketPlugin<SpawnKitConfiguration>
     {
@@ -56,7 +56,7 @@ namespace fc.spawnkit
 		
 		#endregion
 		
-		public static LogMan logMan = new LogMan(); //Declare logman for use.
+		public static LogMan.LogMan logMan = new LogMan.LogMan("SpawnKit"); //Declare logman for use.
     	
     	System.Random rand = new System.Random(); //Random used for random kit selection.
     	
