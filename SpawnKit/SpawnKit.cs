@@ -268,63 +268,10 @@ namespace fc.spawnkit
         	hotKitsList = this.Configuration.Kits;
         }
         
-        private void ClearInventory(RocketPlayer _player) { //TODO Feels hacky. Figure out a better way.
-			_player.Player.Equipment.dequip();
-			int count = 7;
-			byte b = 7;
-			while (count >= 0 && count <= 7)
-			{
-				byte itemCount = _player.Inventory.getItemCount(b);
-				if (itemCount > 0)
-				{
-					bool finished = false;
-					byte b2 = (byte)(itemCount - 1);
-					while (b2 >= 0 && b2 <= itemCount - 1 && !finished)
-					{
-						if (b2 == 0) finished = true; //TODO Hacky way to prevent index out of bounds exception. Prevent b2 from being used at 0 twice.
-						_player.Inventory.removeItem(b, b2);
-						if (b2 > 0) {
-							b2 -= 1;
-						}
-					}
-				}
-				if (b > 0) {
-					b -= 1;
-				}
-				count--;
-			}
-			
+        private void ClearInventory(RocketPlayer _player) {
+        	_player.Inventory.Clear();
 			logMan.LogMessage(1, _player.CharacterName + "'s inventory has been cleared!");
         }
-        
-        private void ClearClothing(RocketPlayer _player) { //TODO Feels hacky. Figure out a better way.
-        	if (PlayerSavedata.fileExists(_player.Player.SteamChannel.SteamPlayer.SteamPlayerID, "/Player/Clothing.dat"))
-			{
-				PlayerSavedata.deleteFile(_player.Player.SteamChannel.SteamPlayer.SteamPlayerID, "/Player/Clothing.dat");
-			}
-			
-        	_player.Player.SteamChannel.send("tellClothing", ESteamCall.ALL, ESteamPacket.UPDATE_TCP_BUFFER, new object[]
-			{
-				0,
-				0,
-				0,
-				0,
-				0,
-				0,
-				0,
-				0,
-				0,
-				0,
-				0,
-				0,
-				0,
-				0
-        	});
-        	
-        	_player.Player.Clothing.save();
-        	_player.Player.Clothing.load();
-        	logMan.LogMessage(1, _player.CharacterName + "'s clothing cleared.");
-		}
         
         private bool DoesKitExist(string _kitName) {
         	foreach (Kit k in this.Configuration.Kits) {
@@ -351,7 +298,6 @@ namespace fc.spawnkit
         			
         		if (PlayerTool.tryGetSteamPlayer(givePlayerName, out steamPlayer) && DoesKitExist(giveKitName)) { //If steam playername is found.
         			ClearInventory(RocketPlayer.FromName(givePlayerName));
-        			ClearClothing(RocketPlayer.FromName(givePlayerName));
         			GivePlayerKit(RocketPlayer.FromName(givePlayerName).Player, giveKitName);
         			logMan.LogMessage(2, "Admin gave " + givePlayerName + " the " + giveKitName + " kit.");
         	    }
