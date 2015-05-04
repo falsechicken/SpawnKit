@@ -25,6 +25,7 @@ using Rocket.RocketAPI.Events;
 using SDG;
 using UnityEngine;
 using FC.LogMan;
+using messageLevels = FC.LogMan.MessageLevels;
 
 namespace FC.SpawnKit
 {
@@ -73,10 +74,10 @@ namespace FC.SpawnKit
         protected override void Load()
         {
 			RocketPlayerEvents.OnPlayerRevive += OnPlayerSpawn;
-            logMan.LogMessage(2, "Kits Loaded:");
+            logMan.LogMessage(messageLevels.INFO, "Kits Loaded:");
             foreach (Kit k in this.Configuration.Kits)
             {
-            	logMan.LogMessage(2, k.Name);
+            	logMan.LogMessage(messageLevels.INFO, k.Name);
             }
             BuildProfessionWeighedList();
             GetSettings();
@@ -205,7 +206,7 @@ namespace FC.SpawnKit
         			{
         				if (!ItemTool.tryForceGiveItem(_player, kitItem.ItemId, kitItem.Amount))
         				{
-        					logMan.LogMessage(3, "Failed to give player item!");        			
+        					logMan.LogMessage(messageLevels.WARNING, "Failed to give player item!");        			
         				}
         			}
         			return;
@@ -233,7 +234,7 @@ namespace FC.SpawnKit
         	foreach (Kit k in this.Configuration.Kits) {
         		for (int i = 0; i <= k.SpawnPercentChance; i++) {
         			if (k.SpawnPercentChance == 0) { //To avoid putting zero chance  (Disabled) kits in the lot. 
-        				logMan.LogMessage(1, "Excluded kit " + k.Name + " from Profession list. Zero spawn chance.");
+        				logMan.LogMessage(messageLevels.INFO, "Excluded kit " + k.Name + " from Profession list. Zero spawn chance.");
         			}
         			else { 
         				weightedProfessionList.Add(k.Name); 
@@ -241,7 +242,7 @@ namespace FC.SpawnKit
         		}
         	}
         	
-        	logMan.LogMessage(1, "Profession List Built.");
+        	logMan.LogMessage(messageLevels.INFO, "Profession List Built.");
         	
         }
         
@@ -269,7 +270,7 @@ namespace FC.SpawnKit
         
         private void ClearInventory(RocketPlayer _player) {
         	_player.Inventory.Clear();
-			logMan.LogMessage(1, _player.CharacterName + "'s inventory has been cleared!");
+			logMan.LogMessage(messageLevels.INFO, _player.CharacterName + "'s inventory has been cleared!");
         }
         
         private bool DoesKitExist(string _kitName) {
@@ -287,7 +288,7 @@ namespace FC.SpawnKit
         		this.Configuration = reLoadedConfig;
         		GetSettings();
         		BuildProfessionWeighedList();
-        		logMan.LogMessage(2, "Configuration Reloaded! Any active changes not saved.");
+        		logMan.LogMessage(messageLevels.WARNING, "Configuration Reloaded! Any active changes not saved.");
         		reloadCalled = false;
         	}
         	
@@ -298,10 +299,10 @@ namespace FC.SpawnKit
         		if (PlayerTool.tryGetSteamPlayer(givePlayerName, out steamPlayer) && DoesKitExist(giveKitName)) { //If steam playername is found.
         			ClearInventory(RocketPlayer.FromName(givePlayerName));
         			GivePlayerKit(RocketPlayer.FromName(givePlayerName).Player, giveKitName, true);
-        			logMan.LogMessage(2, "Admin gave " + givePlayerName + " the " + giveKitName + " kit.");
+        			logMan.LogMessage(messageLevels.INFO, "Admin gave " + givePlayerName + " the " + giveKitName + " kit.");
         	    }
         		else {
-        			logMan.LogMessage(3, "givekit: no such player or kit.");
+        			logMan.LogMessage(messageLevels.WARNING, "givekit: no such player or kit.");
         		}
         		
         		adminGiveRequested = false;
@@ -310,7 +311,7 @@ namespace FC.SpawnKit
         	if (saveCalled) { //TODO Doesnt work. Writes defaults.
         		ApplySettings();
         		SpawnKitConfiguration test = this.Configuration;
-        		logMan.LogMessage(2, "Configuration written to disk.");
+        		logMan.LogMessage(messageLevels.INFO, "Configuration written to disk.");
         		saveCalled = false;
         	}
         }
