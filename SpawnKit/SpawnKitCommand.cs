@@ -21,6 +21,7 @@
 using System;
 using Rocket.Logging;
 using Rocket.RocketAPI;
+using messageLevels = FC.LogMan.MessageLevels;
 
 namespace FC.SpawnKit
 {
@@ -57,7 +58,7 @@ namespace FC.SpawnKit
         	if (cmd[0].ToLower().Equals("set") && isAdmin) { //Set various settings.
         		
         		if (cmd.Length < 3 || cmd.Length > 3) { //Make sure we have the right number or arguments.
-        			SpawnKit.logMan.LogMessage(3, "Incorrect number of arguments for 'set'.");
+        			SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Incorrect number of arguments for 'set'.");
         			return;
         		}
         		
@@ -65,16 +66,16 @@ namespace FC.SpawnKit
         			
         			if (cmd[2].ToLower().Equals("true")) {
         			    	SpawnKit.SetEnabled(true);
-        			    	SpawnKit.logMan.LogMessage(2, "Kits enabled" + " by " + charName);
+        			    	SpawnKit.logMan.LogMessage(messageLevels.INFO, "Kits enabled" + " by " + charName);
         			    	return;
         			    }
         			if (cmd[2].ToLower().Equals("false")) {
         			    SpawnKit.SetEnabled(false);
-        			    SpawnKit.logMan.LogMessage(2, "Kits disabled" + " by " + charName);
+        			    SpawnKit.logMan.LogMessage(messageLevels.INFO, "Kits disabled" + " by " + charName);
         			    return;
         			 }
         			
-        			SpawnKit.logMan.LogMessage(2, "Incorrect option. Only true or false is accepted.");
+        			SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Incorrect option. Only true or false is accepted.");
         			return;
         			
         		}
@@ -83,16 +84,16 @@ namespace FC.SpawnKit
         			
         			if (cmd[2].ToLower().Equals("on")) {
         			    SpawnKit.SetGlobalCoolDownEnabled(true);
-        			    SpawnKit.logMan.LogMessage(2, "Cooldown enabled" + " by " + charName);
+        			    SpawnKit.logMan.LogMessage(messageLevels.INFO, "Cooldown enabled" + " by " + charName);
         			    return;
         			    }
         			if (cmd[2].ToLower().Equals("off")) {
         			    SpawnKit.SetGlobalCoolDownEnabled(false);
-        			    SpawnKit.logMan.LogMessage(2, "Cooldown disabled" + " by " + charName);
+        			    SpawnKit.logMan.LogMessage(messageLevels.INFO, "Cooldown disabled" + " by " + charName);
         			    return;
         			 }
         			
-        			SpawnKit.logMan.LogMessage(2, "Incorrect option. Only on or off is accepted.");
+        			SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Incorrect option. Only on or off is accepted.");
         			return;
         			
         		}
@@ -101,12 +102,12 @@ namespace FC.SpawnKit
         			
         			try {
         				SpawnKit.SetCooldown(int.Parse(cmd[2]));
-        				SpawnKit.logMan.LogMessage(2, "Kit cooldown set to " + cmd[2] + " by " + charName);
+        				SpawnKit.logMan.LogMessage(messageLevels.INFO, "Kit cooldown set to " + cmd[2] + " by " + charName);
         				return;
         			}
         			catch (Exception e )
         			{
-        				SpawnKit.logMan.LogMessage(2, "Not a valid input for cooldown. (Seconds)");
+        				SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Not a valid input for cooldown. (Seconds)");
         				Logger.LogException(e);
         				return;
         			}
@@ -116,16 +117,16 @@ namespace FC.SpawnKit
         			
         			if (cmd[2].ToLower().Equals("on")) {
         			    SpawnKit.SetCoolDownChatMessagesEnabled(true);
-        			    SpawnKit.logMan.LogMessage(2, "Cooldown chat messages enabled" + " by " + charName);
+        			    SpawnKit.logMan.LogMessage(messageLevels.INFO, "Cooldown chat messages enabled" + " by " + charName);
         			    return;
         			    }
         			if (cmd[2].ToLower().Equals("off")) {
         			    SpawnKit.SetCoolDownChatMessagesEnabled(false);
-        			    SpawnKit.logMan.LogMessage(2, "Cooldown chat messages disabled" + " by " + charName);
+        			    SpawnKit.logMan.LogMessage(messageLevels.INFO, "Cooldown chat messages disabled" + " by " + charName);
         			    return;
         			 }
         			
-        			SpawnKit.logMan.LogMessage(2, "Incorrect option. Only on or off is accepted.");
+        			SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Incorrect option. Only on or off is accepted.");
         			return;
         		}
         		
@@ -133,16 +134,16 @@ namespace FC.SpawnKit
         			
         			if (cmd[2].ToLower().Equals("on")) {
         			    SpawnKit.SetProfessionModeEnable(true);
-        			    SpawnKit.logMan.LogMessage(2, "Profession mode enabled" + " by " + charName);
+        			    SpawnKit.logMan.LogMessage(messageLevels.INFO, "Profession mode enabled" + " by " + charName);
         			    return;
         			    }
         			if (cmd[2].ToLower().Equals("off")) {
         			    SpawnKit.SetProfessionModeEnable(false);
-        			    SpawnKit.logMan.LogMessage(2, "Profession mode disabled" + " by " + charName);
+        			    SpawnKit.logMan.LogMessage(messageLevels.INFO, "Profession mode disabled" + " by " + charName);
         			    return;
         			 }
         			
-        			SpawnKit.logMan.LogMessage(2, "Incorrect option. Only on or off is accepted.");
+        			SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Incorrect option. Only on or off is accepted.");
         			return;
         		}
         		
@@ -150,16 +151,16 @@ namespace FC.SpawnKit
         			
         			if (cmd[2].ToLower().Equals("on")) {
         			    SpawnKit.SetProfessionChatMessagesEnabled(true);
-        			    SpawnKit.logMan.LogMessage(2, "Profession chat messages enabled" + " by " + charName);
+        			    SpawnKit.logMan.LogMessage(messageLevels.INFO, "Profession chat messages enabled" + " by " + charName);
         			    return;
         			    }
         			if (cmd[2].ToLower().Equals("off")) {
         			    SpawnKit.SetProfessionChatMessagesEnabled(false);
-        			    SpawnKit.logMan.LogMessage(2, "Profession chat messages disabled" + " by " + charName);
+        			    SpawnKit.logMan.LogMessage(messageLevels.INFO, "Profession chat messages disabled" + " by " + charName);
         			    return;
         			 }
         			
-        			SpawnKit.logMan.LogMessage(2, "Incorrect option. Only on or off is accepted.");
+        			SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Incorrect option. Only on or off is accepted.");
         			return;
         		}
         		
@@ -167,20 +168,20 @@ namespace FC.SpawnKit
         			
         			if (cmd[2].ToLower().Equals("on")) {
         			    SpawnKit.SetSubscriptionMode(true);
-        			    SpawnKit.logMan.LogMessage(2, "Subscription mode enabled" + " by " + charName);
+        			    SpawnKit.logMan.LogMessage(messageLevels.INFO, "Subscription mode enabled" + " by " + charName);
         			    return;
         			    }
         			if (cmd[2].ToLower().Equals("off")) {
         			    SpawnKit.SetSubscriptionMode(false);
-        			    SpawnKit.logMan.LogMessage(2, "Subscription mode disabled" + " by " + charName);
+        			    SpawnKit.logMan.LogMessage(messageLevels.INFO, "Subscription mode disabled" + " by " + charName);
         			    return;
         			 }
         			
-        			SpawnKit.logMan.LogMessage(2, "Incorrect option. Only on or off is accepted.");
+        			SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Incorrect option. Only on or off is accepted.");
         			return;
         		}
         		
-        		SpawnKit.logMan.LogMessage(3, "Invalid set option.");
+        		SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Invalid set option.");
         		return;
         	}
         	
@@ -196,7 +197,7 @@ namespace FC.SpawnKit
         	
         	if (cmd[0].ToLower().Equals("save") && isAdmin) { //TODO Doesnt work.
         		//SpawnKit.SaveConfiguration();
-        		SpawnKit.logMan.LogMessage(2, "Saving disabled for the time being. Does not work.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "Saving disabled for the time being. Does not work.");
         		return;
         	}
         	
@@ -207,7 +208,7 @@ namespace FC.SpawnKit
         			return;
         		}
         			
-        		SpawnKit.logMan.LogMessage(3, "Incorrect number of arguments for 'givekit'.");
+        		SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Incorrect number of arguments for 'givekit'.");
         		return;
 
         	}
@@ -263,15 +264,15 @@ namespace FC.SpawnKit
         		if (SpawnKit.GetSubscriptionModeEnabled()) {
         		
         			var tempSubList = SpawnKit.GetSubscriptionList();
-        			SpawnKit.logMan.LogMessage(2, "-- Kit Subscriptions --");
+        			SpawnKit.logMan.LogMessage(messageLevels.INFO, "-- Kit Subscriptions --");
         		
         			foreach (var pName in SpawnKit.GetSubscriptionList().Keys){
-        				SpawnKit.logMan.LogMessage(2, "Player: "+ pName + " | Kit: " + tempSubList[pName].Name);
+        				SpawnKit.logMan.LogMessage(messageLevels.INFO, "Player: "+ pName + " | Kit: " + tempSubList[pName].Name);
         			}
         			return;
         		}
         		
-        		SpawnKit.logMan.LogMessage(3, "Subscription mode disabled.");
+        		SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Subscription mode disabled.");
         		
         		return;
         	}
@@ -323,11 +324,11 @@ namespace FC.SpawnKit
         			return;
         		}
         		
-        		SpawnKit.logMan.LogMessage(3, "Invalid help topic.");
+        		SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Invalid help topic.");
         		return;
         	}
         	
-        	SpawnKit.logMan.LogMessage(3, "Invalid SpawnKit command. Use 'sk help' for more info.");
+        	SpawnKit.logMan.LogMessage(messageLevels.WARNING, "Invalid SpawnKit command. Use 'sk help' for more info.");
         	return;
         	
         	
@@ -337,14 +338,14 @@ namespace FC.SpawnKit
          * Print plugin status to the console.
          */
         private void PrintStatus() {
-       		SpawnKit.logMan.LogMessage(2, "-- SpawnKit Status --");
-        	SpawnKit.logMan.LogMessage(2, "- Plugin Enabled: " + SpawnKit.GetEnabled());
-        	SpawnKit.logMan.LogMessage(2, "- Subscription Mode Enabled: " + SpawnKit.GetSubscriptionModeEnabled());
-        	SpawnKit.logMan.LogMessage(2, "- Profession Mode Enabled: " + SpawnKit.GetProfessionModeEnabled());
-        	SpawnKit.logMan.LogMessage(2, "- Cooldown Enabled: " + SpawnKit.GetCooldownEnabled());
-        	SpawnKit.logMan.LogMessage(2, "- Cooldown Seconds: " + SpawnKit.GetCooldown());
-        	SpawnKit.logMan.LogMessage(2, "- Cooldown Chat Messages Enabled: " + SpawnKit.GetCoolDownMessagesEnabled());
-        	SpawnKit.logMan.LogMessage(2, "- Profession Chat Messages Enabled: " + SpawnKit.GetProfessionChatMessagesEnabled());
+       		SpawnKit.logMan.LogMessage(messageLevels.INFO, "-- SpawnKit Status --");
+        	SpawnKit.logMan.LogMessage(messageLevels.INFO, "- Plugin Enabled: " + SpawnKit.GetEnabled());
+        	SpawnKit.logMan.LogMessage(messageLevels.INFO, "- Subscription Mode Enabled: " + SpawnKit.GetSubscriptionModeEnabled());
+        	SpawnKit.logMan.LogMessage(messageLevels.INFO, "- Profession Mode Enabled: " + SpawnKit.GetProfessionModeEnabled());
+        	SpawnKit.logMan.LogMessage(messageLevels.INFO, "- Cooldown Enabled: " + SpawnKit.GetCooldownEnabled());
+        	SpawnKit.logMan.LogMessage(messageLevels.INFO, "- Cooldown Seconds: " + SpawnKit.GetCooldown());
+        	SpawnKit.logMan.LogMessage(messageLevels.INFO, "- Cooldown Chat Messages Enabled: " + SpawnKit.GetCoolDownMessagesEnabled());
+        	SpawnKit.logMan.LogMessage(messageLevels.INFO, "- Profession Chat Messages Enabled: " + SpawnKit.GetProfessionChatMessagesEnabled());
         }
         
         /*
@@ -353,85 +354,85 @@ namespace FC.SpawnKit
         private void ShowHelp(string _topic) {
         	
         	if (_topic.ToLower().Equals("help")) {
-        		SpawnKit.logMan.LogMessage(2, "-- SpawnKit Command Help --");
-        		SpawnKit.logMan.LogMessage(2, "* set - Change plugin settings. Admin only.");
-        		SpawnKit.logMan.LogMessage(2, "* status - Display current plugin status. Admin only.");
-        		SpawnKit.logMan.LogMessage(2, "* reload - Reload SpawnKit settings file. Admin only.");
-        		SpawnKit.logMan.LogMessage(2, "* save - Save current settings into settings file. Admin only.");
-        		SpawnKit.logMan.LogMessage(2, "* givekit - Clear players inventory and give kit. Admin only.");
-        		SpawnKit.logMan.LogMessage(2, "* listsubs - List players subscribed to kits. Admin only.");
-        		SpawnKit.logMan.LogMessage(2, "* list - Shows a list of kits in game chat. sk permission..");
-        		SpawnKit.logMan.LogMessage(2, "* class - Select a class. Will get upon death. sk permission.");
-				SpawnKit.logMan.LogMessage(2, "-- Use 'sk help <command>' for more info about each. --");        		
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "-- SpawnKit Command Help --");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* set - Change plugin settings. Admin only.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* status - Display current plugin status. Admin only.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* reload - Reload SpawnKit settings file. Admin only.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* save - Save current settings into settings file. Admin only.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* givekit - Clear players inventory and give kit. Admin only.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* listsubs - List players subscribed to kits. Admin only.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* list - Shows a list of kits in game chat. sk permission..");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* class - Select a class. Will get upon death. sk permission.");
+				SpawnKit.logMan.LogMessage(messageLevels.INFO, "-- Use 'sk help <command>' for more info about each. --");        		
         		return;
         	}
         	
         	if (_topic.ToLower().Equals("set")) {
-        		SpawnKit.logMan.LogMessage(2, "*-- SpawnKit Set Command Help --");
-        		SpawnKit.logMan.LogMessage(2, "* Usage: sk set <setting> <value> -");
-        		SpawnKit.logMan.LogMessage(2, "* enabled - true/false. Is plugin enabled.");
-        		SpawnKit.logMan.LogMessage(2, "* cooldown - on/off. Is kit cooldown enabled.");
-        		SpawnKit.logMan.LogMessage(2, "* cooldowntime - Seconds. Kit cooldown time length.");
-        		SpawnKit.logMan.LogMessage(2, "* cooldownmessages - on/off. Chat cooldown messages.");
-        		SpawnKit.logMan.LogMessage(2, "* professionmode - on/off. Random kit spawn profession mode.");
-        		SpawnKit.logMan.LogMessage(2, "* professionmessages - on/off. Chat profession messages.");
-        		SpawnKit.logMan.LogMessage(2, "* subscriptionmode - on/off. Kit subscription mode.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "*-- SpawnKit Set Command Help --");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* Usage: sk set <setting> <value> -");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* enabled - true/false. Is plugin enabled.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* cooldown - on/off. Is kit cooldown enabled.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* cooldowntime - Seconds. Kit cooldown time length.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* cooldownmessages - on/off. Chat cooldown messages.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* professionmode - on/off. Random kit spawn profession mode.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* professionmessages - on/off. Chat profession messages.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "* subscriptionmode - on/off. Kit subscription mode.");
         		return;
         	}
         	
         	if (_topic.ToLower().Equals("status")) {
-        		SpawnKit.logMan.LogMessage(2," -- SpawnKit Status Command Help --");
-        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk status' ");
-        		SpawnKit.logMan.LogMessage(2," * Fuction: Shows current plugin settings.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," -- SpawnKit Status Command Help --");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Usage: 'sk status' ");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Fuction: Shows current plugin settings.");
         		return;
         	}
         	
         	if (_topic.ToLower().Equals("reload")) {
-        		SpawnKit.logMan.LogMessage(2," -- SpawnKit Reload Command Help --");
-        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk reload' ");
-        		SpawnKit.logMan.LogMessage(2," * Fuction: Reloads settings file. Changes made using");
-        		SpawnKit.logMan.LogMessage(2,"   'set' command will be lost.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," -- SpawnKit Reload Command Help --");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Usage: 'sk reload' ");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Fuction: Reloads settings file. Changes made using");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO,"   'set' command will be lost.");
         		return;
         	}        	
         	
         	if (_topic.ToLower().Equals("save")) {
-        		SpawnKit.logMan.LogMessage(2," -- SpawnKit Save Command Help --");
-        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk save' ");
-        		SpawnKit.logMan.LogMessage(2," * Fuction: Writes settings file using current settings.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," -- SpawnKit Save Command Help --");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Usage: 'sk save' ");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Fuction: Writes settings file using current settings.");
         		return;
         	}
         	
         	if (_topic.ToLower().Equals("givekit")) {
-        		SpawnKit.logMan.LogMessage(2," -- SpawnKit Givekit Command Help --");
-        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk givekit <player> <kit>' ");
-        		SpawnKit.logMan.LogMessage(2," * Fuction: Clears a players inventory and gives them a kit.");
-        		SpawnKit.logMan.LogMessage(2,"   The <player> field can take no spaces. Write the first few");
-        		SpawnKit.logMan.LogMessage(2,"   letters of the players name. (Like admin in vanilla)");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," -- SpawnKit Givekit Command Help --");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Usage: 'sk givekit <player> <kit>' ");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Fuction: Clears a players inventory and gives them a kit.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO,"   The <player> field can take no spaces. Write the first few");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO,"   letters of the players name. (Like admin in vanilla)");
         		return;
         	}
         	
         	if (_topic.ToLower().Equals("list")) {
-        		SpawnKit.logMan.LogMessage(2," -- SpawnKit List Command Help --");
-        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk list' ");
-        		SpawnKit.logMan.LogMessage(2," * Fuction: Prints available kits to players. If");
-        		SpawnKit.logMan.LogMessage(2,"   subscriptionMode is off an error is shown.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," -- SpawnKit List Command Help --");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Usage: 'sk list' ");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Fuction: Prints available kits to players. If");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO,"   subscriptionMode is off an error is shown.");
         		return;
         	}
         	
         	if (_topic.ToLower().Equals("class")) {
-        		SpawnKit.logMan.LogMessage(2," -- SpawnKit Class Command Help --");
-        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk class <classname>' ");
-        		SpawnKit.logMan.LogMessage(2," * Fuction: Subscribes a player to a class/kit. The");
-        		SpawnKit.logMan.LogMessage(2,"   player will receive the kit when they die or after");
-        		SpawnKit.logMan.LogMessage(2,"   the cooldown expires and they die while cooldown is");
-        		SpawnKit.logMan.LogMessage(2,"   on.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," -- SpawnKit Class Command Help --");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Usage: 'sk class <classname>' ");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Fuction: Subscribes a player to a class/kit. The");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO,"   player will receive the kit when they die or after");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO,"   the cooldown expires and they die while cooldown is");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO,"   on.");
         		return;
         	}
         	
         	if (_topic.ToLower().Equals("listsubs")) {
-        		SpawnKit.logMan.LogMessage(2," -- SpawnKit Listsubs Command Help --");
-        		SpawnKit.logMan.LogMessage(2," * Usage: 'sk listsubs'");
-        		SpawnKit.logMan.LogMessage(2," * Fuction: Lists players subscribed to kits.");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," -- SpawnKit Listsubs Command Help --");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Usage: 'sk listsubs'");
+        		SpawnKit.logMan.LogMessage(messageLevels.INFO," * Fuction: Lists players subscribed to kits.");
         		return;
         	}
         	
