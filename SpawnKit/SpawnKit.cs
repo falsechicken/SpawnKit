@@ -308,9 +308,9 @@ namespace FC.SpawnKit
         		adminGiveRequested = false;
         	}
         	
-        	if (saveCalled) { //TODO Doesnt work. Writes defaults.
+        	if (saveCalled) {
         		ApplySettings();
-        		SpawnKitConfiguration test = this.Configuration;
+        		this.Configuration.Save();
         		logMan.LogMessage(messageLevels.INFO, "Configuration written to disk.");
         		saveCalled = false;
         	}

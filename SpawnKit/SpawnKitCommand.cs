@@ -195,9 +195,8 @@ namespace FC.SpawnKit
         		return;
         	}
         	
-        	if (cmd[0].ToLower().Equals("save") && isAdmin) { //TODO Doesnt work.
-        		//SpawnKit.SaveConfiguration();
-        		SpawnKit.logMan.LogMessage(messageLevels.INFO, "Saving disabled for the time being. Does not work.");
+        	if (cmd[0].ToLower().Equals("save") && isAdmin) {
+        		SpawnKit.SaveConfiguration();
         		return;
         	}
         	
