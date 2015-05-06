@@ -59,17 +59,17 @@ namespace FC.SpawnKit
 		
 		public static LogMan.LogMan logMan = new LogMan.LogMan("SpawnKit"); //Declare logman for use.
     	
-    	System.Random rand = new System.Random(); //Random used for random kit selection.
+    	private System.Random rand = new System.Random(); //Random used for random kit selection.
     	
-    	List<string> weightedProfessionList = new List<string>(); //List of kits
+    	private List<string> weightedProfessionList = new List<string>(); //List of kits
     	
-    	int cooldownSecondsRemaining;
+    	private int cooldownSecondsRemaining;
     	
     	//Table with the players name as the key and the time they got a kit as the value. Used for kit cooldown.
-    	static Dictionary<string, DateTime> cooldownTable = new Dictionary<string, DateTime>();
+    	private static Dictionary<string, DateTime> cooldownTable = new Dictionary<string, DateTime>();
     	
     	//Table with players name as the key and the Kit they select as the value. Used to track who subscribed to what kit.
-    	static Dictionary<string, Kit> kitSubscriptionTable = new Dictionary<string, Kit>();
+    	private static Dictionary<string, Kit> kitSubscriptionTable = new Dictionary<string, Kit>();
     	
         protected override void Load()
         {
@@ -94,9 +94,10 @@ namespace FC.SpawnKit
         
         private void OnPlayerSpawn(RocketPlayer _player, Vector3 position, byte angle)
         {
-        	if (this.Configuration.globalEnabled)
-        	{        		
-        		if (!this.Configuration.globalCooldownEnabled) { //If we have no cooldown.
+        	if (this.Configuration.globalEnabled == false) //if the mod is disabled return;
+        		return;
+        		
+        	if (!this.Configuration.globalCooldownEnabled) { //If we have no cooldown.
         			
         			if (this.Configuration.subscriptionMode) {
         				if (kitSubscriptionTable.ContainsKey(_player.CharacterName)) {
@@ -115,12 +116,12 @@ namespace FC.SpawnKit
         			}
         			GivePlayerKit(_player.Player, GetChancedProfession(), false);
         			return;
-        		}
+        	}
         			
-        		//If global cooldown is enabled.
-        		DateTime dtKitUsedLast;
+        	//If global cooldown is enabled.
+        	DateTime dtKitUsedLast;
         			
-        		if (cooldownTable.TryGetValue(_player.SteamName, out dtKitUsedLast)){ //Cooldown is up and player is already in cooldown list.
+        	if (cooldownTable.TryGetValue(_player.SteamName, out dtKitUsedLast)){ //Cooldown is up and player is already in cooldown list.
         			
         			if ((DateTime.Now - dtKitUsedLast).TotalSeconds > this.Configuration.cooldownInSecs) {
         					
@@ -162,7 +163,7 @@ namespace FC.SpawnKit
         			}
         		}
         		
-        		else //If the player is not in the cooldown list.
+        	else //If the player is not in the cooldown list.
         		{
         			if (this.Configuration.subscriptionMode) {
         				if (kitSubscriptionTable.ContainsKey(_player.CharacterName)) { //If the player has subscribed to a kit.
@@ -189,7 +190,6 @@ namespace FC.SpawnKit
         			}
         			
         		}
-        	}
 
         }
         
@@ -314,6 +314,10 @@ namespace FC.SpawnKit
         		logMan.LogMessage(messageLevels.INFO, "Configuration written to disk.");
         		saveCalled = false;
         	}
+        }
+        
+        private bool IsSpawnKitEnabled() {
+        	return this.Configuration.globalEnabled;
         }
         
         public static void AddPlayerToSubscriptionList(string _playerName, Kit _selectedKit) {
