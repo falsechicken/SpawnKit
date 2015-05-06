@@ -197,7 +197,7 @@ namespace FC.SpawnKit
         {	
         	foreach (Kit kit in this.Configuration.Kits) //Loop through kits and see if kit with name exists.
         	{
-        		if (kit.Name.Equals(_kit)) //Found a matching kit.
+        		if (kit.Name.ToLower().Equals(_kit.ToLower())) //Found a matching kit.
         		{
         			if (this.Configuration.randomProfessionMode && this.Configuration.professionChatMessages && _adminGive == false)
         					logMan.SayChatToPlayer(RocketPlayer.FromPlayer(_player), "You spawned as a " + _kit + "." +
@@ -275,7 +275,7 @@ namespace FC.SpawnKit
         
         private bool DoesKitExist(string _kitName) {
         	foreach (Kit k in this.Configuration.Kits) {
-        		if (k.Name.Equals(_kitName)) {
+        		if (k.Name.ToLower().Equals(_kitName.ToLower())) {
         		    	return true;
         		}
         	}
