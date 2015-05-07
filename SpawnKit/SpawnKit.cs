@@ -24,8 +24,7 @@ using Rocket.RocketAPI;
 using Rocket.RocketAPI.Events;
 using SDG;
 using UnityEngine;
-using FC.LogMan;
-using messageLevels = FC.LogMan.MessageLevels;
+using FC.SpawnKit;
 
 namespace FC.SpawnKit
 {
@@ -57,7 +56,7 @@ namespace FC.SpawnKit
 		
 		#endregion
 		
-		public static LogMan.LogMan logMan = new LogMan.LogMan("SpawnKit"); //Declare logman for use.
+		internal static LogHelper logHelper = new LogHelper(); //Declare logHelper for use.
     	
     	private System.Random rand = new System.Random(); //Random used for random kit selection.
     	
@@ -74,10 +73,10 @@ namespace FC.SpawnKit
         protected override void Load()
         {
         	RocketPlayerEvents.OnPlayerRevive += OnPlayerSpawn;
-            logMan.LogMessage(messageLevels.INFO, "Kits Loaded:");
+            logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "Kits Loaded:");
             foreach (Kit k in this.Configuration.Kits)
             {
-            	logMan.LogMessage(messageLevels.INFO, k.Name);
+            	logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, k.Name);
             }
             BuildProfessionWeighedList();
             GetSettings();
@@ -159,7 +158,7 @@ namespace FC.SpawnKit
         				cooldownSecondsRemaining = this.Configuration.cooldownInSecs - (int)(DateTime.Now - dtKitUsedLast).TotalSeconds;
         					
         				if (this.Configuration.cooldownChatMessages) //If we are to send messages to players.
-        					logMan.SayChatToPlayer(_player, cooldownSecondsRemaining + " seconds remaining until kit available.");
+        					RocketChatManager.Say(_player, cooldownSecondsRemaining + " seconds remaining until kit available.");
         			}
         		}
         		
@@ -200,13 +199,13 @@ namespace FC.SpawnKit
         		if (kit.Name.ToLower().Equals(_kit.ToLower())) //Found a matching kit.
         		{
         			if (this.Configuration.randomProfessionMode && this.Configuration.professionChatMessages && _adminGive == false)
-        					logMan.SayChatToPlayer(RocketPlayer.FromPlayer(_player), "You spawned as a " + _kit + "." +
+        					RocketChatManager.Say(RocketPlayer.FromPlayer(_player), "You spawned as a " + _kit + "." +
         					                      " " + kit.SpawnPercentChance + "% Chance.");
         			foreach (KitItem kitItem in kit.Items) //Loop through all items
         			{
         				if (!ItemTool.tryForceGiveItem(_player, kitItem.ItemId, kitItem.Amount))
         				{
-        					logMan.LogMessage(messageLevels.WARNING, "Failed to give player item!");        			
+        					logHelper.LogMessage(LogHelper.MESSAGELEVEL_WARNING, "Failed to give player item!");        			
         				}
         			}
         			return;
@@ -217,7 +216,7 @@ namespace FC.SpawnKit
         		}
         	}
         	
-        	logMan.LogMessage(3, "Kit does not exist!");
+        	logHelper.LogMessage(3, "Kit does not exist!");
         	
         }
         
@@ -234,7 +233,7 @@ namespace FC.SpawnKit
         	foreach (Kit k in this.Configuration.Kits) {
         		for (int i = 0; i <= k.SpawnPercentChance; i++) {
         			if (k.SpawnPercentChance == 0) { //To avoid putting zero chance  (Disabled) kits in the lot. 
-        				logMan.LogMessage(messageLevels.INFO, "Excluded kit " + k.Name + " from Profession list. Zero spawn chance.");
+        				logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "Excluded kit " + k.Name + " from Profession list. Zero spawn chance.");
         			}
         			else { 
         				weightedProfessionList.Add(k.Name); 
@@ -242,7 +241,7 @@ namespace FC.SpawnKit
         		}
         	}
         	
-        	logMan.LogMessage(messageLevels.INFO, "Profession List Built.");
+        	logHelper.LogMessage(LogHelper.MESSAGELEVEL_DEBUG, "Profession List Built.");
         	
         }
         
@@ -270,7 +269,7 @@ namespace FC.SpawnKit
         
         private void ClearInventory(RocketPlayer _player) {
         	_player.Inventory.Clear();
-			logMan.LogMessage(messageLevels.INFO, _player.CharacterName + "'s inventory has been cleared!");
+			logHelper.LogMessage(LogHelper.MESSAGELEVEL_DEBUG, _player.CharacterName + "'s inventory has been cleared!");
         }
         
         private bool DoesKitExist(string _kitName) {
@@ -288,7 +287,7 @@ namespace FC.SpawnKit
         		this.Configuration = reLoadedConfig;
         		GetSettings();
         		BuildProfessionWeighedList();
-        		logMan.LogMessage(messageLevels.WARNING, "Configuration Reloaded! Any active changes not saved.");
+        		logHelper.LogMessage(LogHelper.MESSAGELEVEL_DEBUG, "Configuration Reloaded! Any active changes not saved.");
         		reloadCalled = false;
         	}
         	
@@ -299,10 +298,10 @@ namespace FC.SpawnKit
         		if (PlayerTool.tryGetSteamPlayer(givePlayerName, out steamPlayer) && DoesKitExist(giveKitName)) { //If steam playername is found.
         			ClearInventory(RocketPlayer.FromName(givePlayerName));
         			GivePlayerKit(RocketPlayer.FromName(givePlayerName).Player, giveKitName, true);
-        			logMan.LogMessage(messageLevels.INFO, "Admin gave " + givePlayerName + " the " + giveKitName + " kit.");
+        			logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "Admin gave " + givePlayerName + " the " + giveKitName + " kit.");
         	    }
         		else {
-        			logMan.LogMessage(messageLevels.WARNING, "givekit: no such player or kit.");
+        			logHelper.LogMessage(LogHelper.MESSAGELEVEL_WARNING, "givekit: no such player or kit.");
         		}
         		
         		adminGiveRequested = false;
@@ -311,7 +310,7 @@ namespace FC.SpawnKit
         	if (saveCalled) {
         		ApplySettings();
         		this.Configuration.Save();
-        		logMan.LogMessage(messageLevels.INFO, "Configuration written to disk.");
+        		logHelper.LogMessage(LogHelper.MESSAGELEVEL_DEBUG, "Configuration written to disk.");
         		saveCalled = false;
         	}
         }
@@ -336,7 +335,7 @@ namespace FC.SpawnKit
         }
         
         public static void ReloadConfiguration() {
-        	logMan.LogMessage(messageLevels.WARNING, "Configuration reloading disabled temporarily. Does not work.");
+        	logHelper.LogMessage(LogHelper.MESSAGELEVEL_WARNING, "Configuration reloading disabled temporarily. Does not work.");
         	return;
         	//reLoadedConfig =
         	//reloadCalled = true;
