@@ -19,7 +19,7 @@ Licensed under the GPLv2: https://www.gnu.org/licenses/gpl-2.0.txt
 	
 * Subscription Mode: Think classes. Players can use the commands 'sk list' and 'sk class className' to pick a kit (Or class. If you think of it that way) that they will get every time they spawn. Useful in deathmatch like scenarios.
 	
-* Live Configuration Modifications: All settings (Other than kit definitions) can be modified in game using the 'sk set <option> <argument>' command. Turn modes on and off, enable or disable cooldown, etc.. However these settings will not save to the config file. (Admin only)
+* Live Configuration Modifications: All settings (Other than kit definitions) can be modified in game using the 'sk set <option> <argument>' command. Turn modes on and off, enable or disable cooldown, etc.. Use the 'sk save' command to save settings to the configuration file. (Admin only)
 	
 Most of the documentation is in game using the 'sk help' command from the server console and in the example configurations provided in the 'Example Config' folder. I like and am much better at writing code than documentation.
 
