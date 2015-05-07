@@ -38,11 +38,14 @@ namespace FC.SpawnKit
 		
 		private  bool debugMode;
 		
+		private string parentName;
+		
 		#endregion
 		
-		internal LogHelper()
+		internal LogHelper(string _parentName)
 		{
 			debugMode = false;
+			parentName = _parentName;
 		}
 		
 		#region INTERNAL METHODS
@@ -83,12 +86,12 @@ namespace FC.SpawnKit
 		
 		private void PrintWarningMessage(string _message)
 		{
-			Logger.LogWarning(_message);
+			Logger.LogWarning(parentName + " >> " + _message);
 		}
 		
 		private void PrintErrorMessage(string _message)
 		{
-			Logger.LogError(_message);
+			Logger.LogError(parentName + " >> " + _message);
 		}
 		
 		#endregion

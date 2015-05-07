@@ -56,7 +56,7 @@ namespace FC.SpawnKit
 		
 		#endregion
 		
-		internal static LogHelper logHelper = new LogHelper(); //Declare logHelper for use.
+		internal static LogHelper logHelper = new LogHelper("SpawnKit"); //Declare logHelper for use.
     	
     	private System.Random rand = new System.Random(); //Random used for random kit selection.
     	
