@@ -287,7 +287,7 @@ namespace FC.SpawnKit
         		this.Configuration = reLoadedConfig;
         		GetSettings();
         		BuildProfessionWeighedList();
-        		logHelper.LogMessage(LogHelper.MESSAGELEVEL_DEBUG, "Configuration Reloaded! Any active changes not saved.");
+        		logHelper.LogMessage(LogHelper.MESSAGELEVEL_WARNING, "Configuration Reloaded! Any active changes not saved.");
         		reloadCalled = false;
         	}
         	
@@ -310,7 +310,7 @@ namespace FC.SpawnKit
         	if (saveCalled) {
         		ApplySettings();
         		this.Configuration.Save();
-        		logHelper.LogMessage(LogHelper.MESSAGELEVEL_DEBUG, "Configuration written to disk.");
+        		logHelper.LogMessage(LogHelper.MESSAGELEVEL_WARNING, "Configuration written to disk.");
         		saveCalled = false;
         	}
         }
