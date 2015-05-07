@@ -31,8 +31,6 @@ namespace FC.SpawnKit
 {
 	public class SpawnKit : RocketPlugin<SpawnKitConfiguration>
     {
-		public static SpawnKit Instance;
-		
 		#region HOT SWAP SETTINGS VARS
 		
 		static bool hotGlobalEnabled;
@@ -75,8 +73,6 @@ namespace FC.SpawnKit
     	
         protected override void Load()
         {
-        	Instance = this;
-        	
         	RocketPlayerEvents.OnPlayerRevive += OnPlayerSpawn;
             logMan.LogMessage(messageLevels.INFO, "Kits Loaded:");
             foreach (Kit k in this.Configuration.Kits)
@@ -314,7 +310,7 @@ namespace FC.SpawnKit
         	
         	if (saveCalled) {
         		ApplySettings();
-        		//Instance.Configuration. //TODO: LATEST ROCKET BROKE THIS
+        		this.Configuration.Save();
         		logMan.LogMessage(messageLevels.INFO, "Configuration written to disk.");
         		saveCalled = false;
         	}
@@ -340,8 +336,10 @@ namespace FC.SpawnKit
         }
         
         public static void ReloadConfiguration() {
-        	//reLoadedConfig = //TODO: LATEST ROCKET BROKE THIS.
-        	reloadCalled = true;
+        	logMan.LogMessage(messageLevels.WARNING, "Configuration reloading disabled temporarily. Does not work.");
+        	return;
+        	//reLoadedConfig =
+        	//reloadCalled = true;
         	
         }
         
