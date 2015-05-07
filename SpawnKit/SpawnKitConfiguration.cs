@@ -25,7 +25,7 @@ using System.Xml.Serialization;
 
 namespace FC.SpawnKit
 {
-	public class SpawnKitConfiguration : RocketConfiguration
+	public class SpawnKitConfiguration : IRocketConfiguration
 	{
 		[XmlArrayItem(ElementName = "Kit")]
 		public List<Kit> Kits;
@@ -38,7 +38,7 @@ namespace FC.SpawnKit
 		public string defaultKit;
 		public int cooldownInSecs;
 		
-		public RocketConfiguration DefaultConfiguration
+		public IRocketConfiguration DefaultConfiguration
 		{
 			get
 			{
