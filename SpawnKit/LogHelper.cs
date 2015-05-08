@@ -84,7 +84,7 @@ namespace FC.SpawnKit
 		{
 			foreach (RocketPlayer rP in playerSendToList)
 			{
-				if (rP.CSteamID.Equals(_player.CSteamID));
+				if (rP.CSteamID.Equals(_player.CSteamID))
 				    {
 				    	playerSendToList.Remove(rP);
 				    	return;
