@@ -73,7 +73,9 @@ namespace FC.SpawnKit
         protected override void Load()
         {
         	RocketPlayerEvents.OnPlayerRevive += OnPlayerSpawn;
+        	
             logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "Kits Loaded:");
+            
             foreach (Kit k in this.Configuration.Kits)
             {
             	logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, k.Name);
@@ -350,6 +352,30 @@ namespace FC.SpawnKit
         	adminGiveRequested = true;
         	givePlayerName = _playerCharName;
         	giveKitName = _kit;
+        }
+        
+        /**
+         * Adds a player to LogHelpers list of players to get log output sent to them.
+         */
+        public static void AddPlayerToLogList(RocketPlayer _player)
+        {
+        	logHelper.AddPlayerToLogOutputList(_player);
+        }
+        
+        /**
+         * Removes a player from the list of players to get log output sent to them.
+         */
+        public static void RemovePlayerFromLogList(RocketPlayer _player)
+        {
+        	logHelper.RemovePlayerFromLogOutputList(_player);
+        }
+        
+        /**
+         * Clears the list of players that get log output messages sent to them.
+         */
+        public static void CleanPlayerLogList()
+        {
+        	logHelper.ClearPlayerLogOutputList();
         }
         
         #region SETTERS

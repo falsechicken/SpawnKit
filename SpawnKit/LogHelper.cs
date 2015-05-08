@@ -19,7 +19,9 @@
  *****/
 
 using System;
+using System.Collections.Generic;
 using Rocket.Logging;
+using Rocket.RocketAPI;
 
 namespace FC.SpawnKit
 {
@@ -40,12 +42,15 @@ namespace FC.SpawnKit
 		
 		private string parentName;
 		
+		private List<RocketPlayer> playerSendToList;
+		
 		#endregion
 		
 		internal LogHelper(string _parentName)
 		{
 			debugMode = false;
 			parentName = _parentName;
+			playerSendToList = new List<RocketPlayer>();
 		}
 		
 		#region INTERNAL METHODS
@@ -70,31 +75,67 @@ namespace FC.SpawnKit
 			debugMode = _debug;
 		}
 		
+		internal void AddPlayerToLogOutputList(RocketPlayer _player)
+		{
+			if (!playerSendToList.Contains(_player)) { playerSendToList.Add(_player); }
+		}
+		
+		internal void RemovePlayerFromLogOutputList(RocketPlayer _player)
+		{
+			foreach (RocketPlayer rP in playerSendToList)
+			{
+				if (rP.CSteamID.Equals(_player.CSteamID));
+				    {
+				    	playerSendToList.Remove(rP);
+				    	return;
+				    }
+			}
+		}
+		
+		internal void ClearPlayerLogOutputList()
+		{
+			playerSendToList.Clear();
+		}
+		
 		#endregion
 		
 		#region PRIVATE METHODS
 		
 		private void PrintDebugMessage(string _message)
 		{
-			if (debugMode) { Logger.Log(_message); }
+			if (debugMode) 
+			{ 
+				Logger.Log(_message); 
+				PrintMessageToPlayerList(_message);
+			}
 		}
 		
 		private void PrintMessage(string _message)
 		{
 			Logger.Log(_message);
+			PrintMessageToPlayerList(_message);
 		}
 		
 		private void PrintWarningMessage(string _message)
 		{
 			Logger.LogWarning(parentName + " >> " + _message);
+			PrintMessageToPlayerList(_message);
 		}
 		
 		private void PrintErrorMessage(string _message)
 		{
 			Logger.LogError(parentName + " >> " + _message);
+			PrintMessageToPlayerList(_message);
+		}
+		
+		private void PrintMessageToPlayerList(string _message)
+		{
+			foreach (RocketPlayer _player in playerSendToList)
+			{
+				RocketChatManager.Say(_player, parentName + ": " + _message);
+			}
 		}
 		
 		#endregion
-		
 	}
 }

@@ -275,6 +275,39 @@ namespace FC.SpawnKit
         		return;
         	}
         	
+        	if (cmd[0].ToLower().Equals("logme") && isAdmin) { //Direct SpawnKit console messages to yourself.
+        		
+        		if (isServer) 
+        		{
+        			ShowCannotRunFromConsoleWarning();
+        			return;
+        		}
+        		
+        		SpawnKit.AddPlayerToLogList(caller);
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "Added player " + charName + " to the log output list.");
+        		return;
+        	}
+        	
+        	if (cmd[0].ToLower().Equals("unlogme") && isAdmin) { //Disable SpawnKit console messages being sent to you.
+        		
+        		if (isServer)
+        		{
+        			ShowCannotRunFromConsoleWarning();
+        			return;
+        		}
+        		
+        		SpawnKit.RemovePlayerFromLogList(caller);
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "Removed player " + charName + " from the log output list.");
+        		return;
+        	}
+        	
+        	if (cmd[0].ToLower().Equals("clearlogplayers") && isAdmin) { //Disable SpawnKit console messages being sent to you.
+        		
+        		SpawnKit.CleanPlayerLogList();
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "Player log message list cleared.");
+        		return;
+        	}
+        	
         	if (cmd[0].ToLower().Equals("help")) {
         	    	
         		if (cmd.Length == 1) { //If we are only showing the default help page.
@@ -322,14 +355,27 @@ namespace FC.SpawnKit
         			return;
         		}
         		
+        		if (cmd[1].ToLower().Equals("logme")) {
+        			ShowHelp("logme");
+        			return;
+        		}
+        		
+        		if (cmd[1].ToLower().Equals("unlogme")) {
+        			ShowHelp("unlogme");
+        			return;
+        		}
+        		
+        		if (cmd[1].ToLower().Equals("clearlogplayers")) {
+        			ShowHelp("clearlogplayers");
+        			return;
+        		}
+        		
         		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_WARNING, "Invalid help topic.");
         		return;
         	}
         	
         	SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_WARNING, "Invalid SpawnKit command. Use 'sk help' for more info.");
         	return;
-        	
-        	
         }
         
         /*
@@ -361,7 +407,10 @@ namespace FC.SpawnKit
         		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "* listsubs - List players subscribed to kits. Admin only.");
         		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "* list - Shows a list of kits in game chat. sk permission..");
         		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "* class - Select a class. Will get upon death. sk permission.");
-				SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "-- Use 'sk help <command>' for more info about each. --");        		
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "* logme - Enable calling player to receive console messages. Admin only.");
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "* unlogme - Disable calling player from receiving console messages. Admin only.");
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "* clearlogplayers - Stops all subscribed players from receiving console messages. Admin only.");
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO, "-- Use 'sk help <command>' for more info about each. --");
         		return;
         	}
         	
@@ -434,6 +483,32 @@ namespace FC.SpawnKit
         		return;
         	}
         	
+        	if (_topic.ToLower().Equals("logme")) {
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO," -- SpawnKit Logme Command Help --");
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO," * Usage: 'sk logme'");
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO," * Fuction: Adds calling player to the list of players to send console messages to.");
+        		return;
+        	}
+        	
+        	if (_topic.ToLower().Equals("unlogme")) {
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO," -- SpawnKit Unlogme Command Help --");
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO," * Usage: 'sk unlogme'");
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO," * Fuction: Removes calling player to the list of players to send console messages to.");
+        		return;
+        	}
+        	
+        	if (_topic.ToLower().Equals("clearlogplayers")) {
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO," -- SpawnKit Clearlogplayers Command Help --");
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO," * Usage: 'sk clearlogplayers'");
+        		SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_INFO," * Fuction: Stops all players that are subscribed to receive console messages from getting them.");
+        		return;
+        	}
+        	
+        }
+        
+        private void ShowCannotRunFromConsoleWarning()
+        {
+        	SpawnKit.logHelper.LogMessage(LogHelper.MESSAGELEVEL_WARNING, "This command cannot be used from the console.");
         }
     }
 }
