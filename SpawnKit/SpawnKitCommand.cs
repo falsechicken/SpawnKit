@@ -41,9 +41,8 @@ namespace FC.SpawnKit
             get { return "Root SpawnKit Command. Run 'sk help' for more info.";}
         }
 
-        public void Execute(RocketPlayer caller, string command)
+        public void Execute(RocketPlayer caller, string[] cmd)
         {
-        	string[] cmd = command.Split(null);
         	
         	bool isServer;
         	
