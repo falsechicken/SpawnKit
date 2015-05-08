@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using Rocket.Logging;
 using Rocket.RocketAPI;
+using Steamworks;
 
 namespace FC.SpawnKit
 {
@@ -42,7 +43,7 @@ namespace FC.SpawnKit
 		
 		private string parentName;
 		
-		private List<RocketPlayer> playerSendToList;
+		private List<ulong> playerIDSendToList;
 		
 		#endregion
 		
@@ -50,7 +51,7 @@ namespace FC.SpawnKit
 		{
 			debugMode = false;
 			parentName = _parentName;
-			playerSendToList = new List<RocketPlayer>();
+			playerIDSendToList = new List<ulong>();
 		}
 		
 		#region INTERNAL METHODS
@@ -77,24 +78,25 @@ namespace FC.SpawnKit
 		
 		internal void AddPlayerToLogOutputList(RocketPlayer _player)
 		{
-			if (!playerSendToList.Contains(_player)) { playerSendToList.Add(_player); }
+			if (!playerIDSendToList.Contains(_player.CSteamID.m_SteamID)) { playerIDSendToList.Add(_player.CSteamID.m_SteamID); }
 		}
 		
 		internal void RemovePlayerFromLogOutputList(RocketPlayer _player)
 		{
-			foreach (RocketPlayer rP in playerSendToList)
+			
+			foreach (ulong sID in playerIDSendToList)
 			{
-				if (rP.CSteamID.Equals(_player.CSteamID))
-				    {
-				    	playerSendToList.Remove(rP);
+				if (sID.Equals(_player.CSteamID.m_SteamID))
+				{
+				    	playerIDSendToList.Remove(sID);
 				    	return;
-				    }
+				}
 			}
 		}
 		
 		internal void ClearPlayerLogOutputList()
 		{
-			playerSendToList.Clear();
+			playerIDSendToList.Clear();
 		}
 		
 		#endregion
@@ -130,9 +132,9 @@ namespace FC.SpawnKit
 		
 		private void PrintMessageToPlayerList(string _message)
 		{
-			foreach (RocketPlayer _player in playerSendToList)
+			foreach (ulong sID in playerIDSendToList)
 			{
-				RocketChatManager.Say(_player, parentName + ": " + _message);
+				RocketChatManager.Say(RocketPlayer.FromCSteamID((CSteamID) sID), parentName + ": " + _message);
 			}
 		}
 		
