@@ -6,8 +6,6 @@ Contact: jmdevsupport@gmail.com
 
 Source Code: https://github.com/falsechicken/SpawnKit
 
-Depends on the LogMan library: https://github.com/falsechicken/LogMan-Rocket
-
 Licensed under the GPLv2: https://www.gnu.org/licenses/gpl-2.0.txt
 
 - Features -
@@ -23,4 +21,4 @@ Licensed under the GPLv2: https://www.gnu.org/licenses/gpl-2.0.txt
 	
 Most of the documentation is in game using the 'sk help' command from the server console and in the example configurations provided in the 'Example Config' folder. I like and am much better at writing code than documentation.
 
-WARNING: You will need to add the sk command to the Rocket Permissions.config.xml in order to let players use the sk command. If not the command will do nothing for players. You will also need to move the libraries from the 'Libraries' folder into your Rocket 'Libraries' folder.
+WARNING: You will need to add the sk command to the Rocket Permissions.config.xml in order to let players use the sk command. If not the command will do nothing for players.
