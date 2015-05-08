@@ -92,6 +92,8 @@ namespace FC.SpawnKit
         	ApplySettings();
         	
         }
+    	
+    	#region PRIVATE METHODS
         
         private void OnPlayerSpawn(RocketPlayer _player, Vector3 position, byte angle)
         {
@@ -321,6 +323,10 @@ namespace FC.SpawnKit
         	return this.Configuration.globalEnabled;
         }
         
+        #endregion
+        
+        #region PUBLIC METHODS
+        
         public static void AddPlayerToSubscriptionList(string _playerName, Kit _selectedKit) {
         	try {
         		kitSubscriptionTable.Add(_playerName, _selectedKit);
@@ -378,7 +384,10 @@ namespace FC.SpawnKit
         	logHelper.ClearPlayerLogOutputList();
         }
         
+        #endregion
+        
         #region SETTERS
+        
         public static void SetCooldown(int _var) {
         	hotCooldownInSecs = _var;
         }
