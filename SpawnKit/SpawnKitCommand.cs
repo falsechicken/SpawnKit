@@ -189,7 +189,7 @@ namespace FC.SpawnKit
         	}
         	
         	if (cmd[0].ToLower().Equals("reload") && isAdmin) {
-        		SpawnKit.ReloadConfiguration();
+        		SpawnKit.ReloadSpawnKitConfiguration();
         		return;
         	}
         	

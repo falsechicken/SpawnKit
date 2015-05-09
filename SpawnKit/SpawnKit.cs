@@ -288,7 +288,7 @@ namespace FC.SpawnKit
         private void DoQueuedUpdateCommands() {
         	
         	if (reloadCalled) { //Reload settings if called.
-        		this.Configuration = reLoadedConfig;
+        		this.ReloadConfiguration();
         		GetSettings();
         		BuildProfessionWeighedList();
         		logHelper.LogMessage(LogHelper.MESSAGELEVEL_WARNING, "Configuration Reloaded! Any active changes not saved.");
@@ -342,12 +342,8 @@ namespace FC.SpawnKit
         	kitSubscriptionTable.Remove(_playerName);
         }
         
-        public static void ReloadConfiguration() {
-        	logHelper.LogMessage(LogHelper.MESSAGELEVEL_WARNING, "Configuration reloading disabled temporarily. Does not work.");
-        	return;
-        	//reLoadedConfig =
-        	//reloadCalled = true;
-        	
+        public static void ReloadSpawnKitConfiguration() {
+        	reloadCalled = true;
         }
         
         public static void SaveConfiguration() {
