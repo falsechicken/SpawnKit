@@ -20,8 +20,11 @@
 
 using System;
 using System.Collections.Generic;
-using Rocket.Logging;
-using Rocket.RocketAPI;
+using Rocket.Unturned.Logging;
+using SDG;
+using Rocket.API;
+using Rocket.Unturned;
+using Rocket.Unturned.Player;
 using Steamworks;
 
 namespace FC.SpawnKit
@@ -134,7 +137,7 @@ namespace FC.SpawnKit
 		{
 			foreach (ulong sID in playerIDSendToList)
 			{
-				RocketChatManager.Say(RocketPlayer.FromCSteamID((CSteamID) sID), parentName + ": " + _message);
+				RocketChat.Say(RocketPlayer.FromCSteamID((CSteamID) sID), parentName + ": " + _message);
 			}
 		}
 		

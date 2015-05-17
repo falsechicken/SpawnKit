@@ -19,8 +19,11 @@
  *****/
  
 using System;
-using Rocket.Logging;
-using Rocket.RocketAPI;
+using Rocket.API;
+using Rocket.Unturned.Player;
+using Rocket.Unturned.Commands;
+using Rocket.Unturned.Logging;
+using Rocket.Unturned;
 
 namespace FC.SpawnKit
 {
@@ -221,12 +224,12 @@ namespace FC.SpawnKit
         				classListString = classListString + k.Name + ", ";
         			}
         			
-        			RocketChatManager.Say(caller, "Class List: " + classListString);
-        			RocketChatManager.Say(caller, "/sk class ClassName to pick class.");
+        			RocketChat.Say(caller, "Class List: " + classListString);
+        			RocketChat.Say(caller, "/sk class ClassName to pick class.");
         			return;
         		}
         		
-        		RocketChatManager.Say(caller, "Subscription mode disabled.");
+        		RocketChat.Say(caller, "Subscription mode disabled.");
         		return;
         		
         	}
@@ -238,20 +241,20 @@ namespace FC.SpawnKit
         				foreach (Kit k in SpawnKit.GetKitsList()) { //Loop through kits to see if they picked a valid class.
         					if (cmd[1].ToLower().Equals(k.Name.ToLower())) { //They did.
         						SpawnKit.AddPlayerToSubscriptionList(charName, k);
-        						RocketChatManager.Say(caller, "Class selected.");
+        						RocketChat.Say(caller, "Class selected.");
         						return;
 	        				}
         				}
-    	    			RocketChatManager.Say(caller, "No such class.");
+    	    			RocketChat.Say(caller, "No such class.");
 	        			return;
         			}
         			catch (Exception e) {
-        				RocketChatManager.Say(caller, "No such class.");
+        				RocketChat.Say(caller, "No such class.");
         				return;
         			}
         		}
         		
-        		RocketChatManager.Say(caller, "Subscription mode disabled.");
+        		RocketChat.Say(caller, "Subscription mode disabled.");
         		return;
         		
         	}

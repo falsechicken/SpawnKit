@@ -20,8 +20,11 @@
 
 using System;
 using System.Collections.Generic;
-using Rocket.RocketAPI;
-using Rocket.RocketAPI.Events;
+using Rocket.API;
+using Rocket.Unturned;
+using Rocket.Unturned.Plugins;
+using Rocket.Unturned.Events;
+using Rocket.Unturned.Player;
 using SDG;
 using UnityEngine;
 using FC.SpawnKit;
@@ -162,7 +165,7 @@ namespace FC.SpawnKit
         				cooldownSecondsRemaining = this.Configuration.cooldownInSecs - (int)(DateTime.Now - dtKitUsedLast).TotalSeconds;
         					
         				if (this.Configuration.cooldownChatMessages) //If we are to send messages to players.
-        					RocketChatManager.Say(_player, cooldownSecondsRemaining + " seconds remaining until kit available.");
+        					RocketChat.Say(_player, cooldownSecondsRemaining + " seconds remaining until kit available.");
         			}
         		}
         		
@@ -203,7 +206,7 @@ namespace FC.SpawnKit
         		if (kit.Name.ToLower().Equals(_kit.ToLower())) //Found a matching kit.
         		{
         			if (this.Configuration.randomProfessionMode && this.Configuration.professionChatMessages && _adminGive == false)
-        					RocketChatManager.Say(_player, "You spawned as a " + _kit + "." +
+        					RocketChat.Say(_player, "You spawned as a " + _kit + "." +
         					                      " " + kit.SpawnPercentChance + "% Chance.");
         			foreach (KitItem kitItem in kit.Items) //Loop through all items
         			{

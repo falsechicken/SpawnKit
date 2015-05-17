@@ -19,13 +19,13 @@
  *****/
  
 using System;
-using Rocket.RocketAPI;
+using Rocket.API;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 
 namespace FC.SpawnKit
 {
-	public class SpawnKitConfiguration : IRocketConfiguration
+	public class SpawnKitConfiguration : IRocketPluginConfiguration
 	{
 		[XmlArrayItem(ElementName = "Kit")]
 		public List<Kit> Kits;
@@ -38,7 +38,7 @@ namespace FC.SpawnKit
 		public string defaultKit;
 		public int cooldownInSecs;
 		
-		public IRocketConfiguration DefaultConfiguration
+		public IRocketPluginConfiguration DefaultConfiguration
 		{
 			get
 			{
