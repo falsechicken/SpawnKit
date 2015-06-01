@@ -1,3 +1,5 @@
+[I NO LONGER DEVELOP PLUGINS. FEEL FREE TO FORK THIS TO KEEP IT UPDATED.]
+
 -- SpawnKit Plugin For Rocket --
 
 Provides spawn kits, classes, and a few extra bells and whistles.
